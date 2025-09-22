@@ -1,50 +1,47 @@
 # Discussion 1 – Kickoff & Dashboard Preview
 
-## Session Goals
-- Experience the end-to-end Streamlit dashboard you will adapt during the workshop.
-- Install and launch the `streamlit_ex1` template so you can customize visuals and copy the workflow.
-- Clone the [FTSFR](https://github.com/jmbejara/ftsfr) repository and learn how its data pipeline delivers cleaned CRSP extracts.
-- Practice basic visual storytelling with WRDS/CRSP data in preparation for deeper forecasting work.
+Day 1 is all about orienting ourselves, exploring the tooling, and leaving with everything installed so you can iterate overnight.
 
-## Prep Checklist (Before We Meet)
-- Python 3.11+ available locally (conda or venv is fine).
-- Pull this workshop repo and run `pip install -r src/streamlit_ex1/requirements.txt` to get Streamlit, yfinance, Plotly, and the supporting data packages.
-- Create a GitHub account if you do not already have one—deployment to Streamlit Community Cloud will request it.
-- Review the FTSFR README sections on environment setup and subscriptions (copied in the workshop materials for quick reference).
+- Start with the [workshop introduction](introduction.md) to revisit goals, prerequisites, and how the two days fit together.
+- Walk through the [Streamlit basics](streamlit_basics.md) document while we demo the four scaffold apps.
+- Follow the [doit basics](doit_basics.md) guide to run the automation pipeline (`doit pull_crsp_data` → publish docs).
+- Use [Intro to FTSFR data](intro_to_ftsfr_data.md) as a reference once you’re ready to clone the external repository.
+
+## Session Goals
+- Understand the workshop deliverable and how we’ll collaborate over the next two days.
+- Launch and customize the Streamlit examples (`app_02`, `app_03`, `app_01`, `app_04_crsp`).
+- Run the `doit` pipeline to produce a CRSP excerpt and rebuild the documentation site.
+- Confirm you can clone the FTSFR repo and pull WRDS data (or capture questions if credentials are pending).
 
 ## Agenda — Day 1
 
 ### Segment A · Lecture & Live Demo (12:00 – 1:30 pm)
-- Orient to the two-day dashboard goal and the student deliverable rubric.
-- Live run-through of `streamlit run src/streamlit_ex1/app.py` highlighting: data sourcing, return tear sheet, forecast preview, and how Streamlit layouts are structured.
-- Quick tour of the code (data loader, metrics block, visualization tabs) so students know where to tweak copy, palette, and logic.
-- Walkthrough of the Streamlit Community Cloud deployment flow; flag prerequisites (GitHub repo, `requirements.txt`, lightweight secrets handling).
-- Short discussion: “What makes a financial dashboard credible?” Collect criteria to revisit later.
+1. Orientation: revisit goals, grading rubric, and deployment expectations.
+2. Progressive Streamlit tour (apps 02 → 03 → 01 → 04) with code comparisons.
+3. Discussion: what makes a financial dashboard credible? Capture criteria the group agrees on.
 
 ### Segment B · Breakout Lab (1:30 – 2:30 pm)
-- Task 1: Fork the example app, change the default ticker list, and restyle the line chart (colors, titles, date range defaults).
-- Task 2: Add one new summary metric (e.g., rolling Sharpe, worst five drawdowns) to the metrics area.
-- Task 3: Deploy locally (`streamlit run ...`) and share a screenshot in Canvas/Slack.
-- Optional stretch: Push to GitHub and begin Streamlit Community Cloud deployment (we will finish this after Lecture 2).
+- Customize the hello world app, point the intermediate app to a new CSV, and run `doit pull_crsp_data` so `app_04_crsp.py` reflects your own data slice.
+- Optional stretch: attempt a Streamlit Community Cloud deployment of your favorite variant.
 
 ### Segment C · Lecture & Guided Walkthrough (2:30 – 4:00 pm)
-- Introduce the FTSFR benchmark: motivation, dataset catalog, and how it links to the broader benchmarking conversation (see `reports/draft_ftsfr.tex`).
-- Step-by-step: cloning `ftsfr`, creating the `ftsfr` conda environment, copying `.env.example`, and toggling `wrds` access in `subscriptions.toml`.
-- Use `doit -f dodo_01_pull.py list` to inspect available tasks; run the CRSP pulls together and inspect the resulting parquet files.
-- Demo: load a CRSP parquet file into a notebook, create a minimal histogram and cumulative return plot, and export a CSV for Streamlit consumption.
-- Discuss visualization best practices for dashboards (color consistency, context annotations, hover text, layout density).
+1. Deep dive on `doit` and the Sphinx publishing flow.
+2. Clone the FTSFR repository, configure `.env` + `subscriptions.toml`, and test WRDS access.
+3. Export a slim CRSP CSV for further visualization work.
 
-### Independent Practice (4:00 – 5:00 pm dinner window)
-- Encourage students to finish customizing their tear sheet visuals and to explore at least one additional CRSP ticker set for tomorrow’s lab.
+### Independent Practice (4:00 – 5:00 pm)
+- Finish personalizing the apps and document two dashboard ideas you want to explore in Discussion 2.
 
-## Breakout Reference
-- **App path:** `src/streamlit_ex1/app.py`
-- **Command:** `streamlit run src/streamlit_ex1/app.py`
-- **Key files to edit:** data loader section (`load_price_data`), metric calculations (`calculate_metrics`), Plotly figure definitions in the tabs.
-- **Deployment checklist:** push to GitHub, confirm `requirements.txt`, configure secrets (if any) in Streamlit Cloud, and set the entry point to `src/streamlit_ex1/app.py`.
-- **Offline note:** the template falls back to `sample_prices.csv` (and synthetic placeholders for other tickers) when Yahoo Finance is unavailable—swap in WRDS/CRSP extracts or connect to the internet for live updates.
+## Suggested Next Steps Before Discussion 2
+- Spend time with each app (`app_02`, `app_03`, `app_04_crsp`, `app_01`) and note one enhancement you want to attempt tomorrow.
+- Finish cloning the FTSFR repository, configure credentials, and pull the CRSP dataset (export a workshop-friendly CSV for quick iteration).
+- Note two questions or ideas about forecasting/narrative framing that you want addressed in the benchmarking lecture.
 
-## Deliverables Before Discussion 2
-- Local copy of the Streamlit template running with at least one personalized visualization.
-- FTSFR repository cloned and able to list DoIt tasks without errors; first CRSP parquet downloaded (store under `_data/` in the `ftsfr` repo or export a copy into this workshop repo’s `data/` folder if preferred).
-- Two draft ideas for how forecasting output could integrate into the dashboard (note them in your project journal; we will share tomorrow).
+```{toctree}
+:maxdepth: 1
+:hidden:
+introduction.md
+streamlit_basics.md
+doit_basics.md
+intro_to_ftsfr_data.md
+```

@@ -105,7 +105,9 @@ def try_download_batch(
     return close if not close.empty else None
 
 
-def fetch_single_ticker(symbol: str, start: pd.Timestamp, end: pd.Timestamp) -> Optional[pd.Series]:
+def fetch_single_ticker(
+    symbol: str, start: pd.Timestamp, end: pd.Timestamp
+) -> Optional[pd.Series]:
     try:
         data = yf.download(
             tickers=symbol,
@@ -153,7 +155,9 @@ def fetch_single_ticker(symbol: str, start: pd.Timestamp, end: pd.Timestamp) -> 
     return close
 
 
-def generate_stub_prices(ticker: str, start: pd.Timestamp, end: pd.Timestamp) -> pd.Series:
+def generate_stub_prices(
+    ticker: str, start: pd.Timestamp, end: pd.Timestamp
+) -> pd.Series:
     """Create deterministic synthetic prices so the template works offline."""
 
     index = pd.bdate_range(start, end)
@@ -193,7 +197,9 @@ def load_price_data(
         missing = [t for t in tickers if t not in frames]
         if missing:
             # Generate synthetic data for missing tickers
-            synthetic_frames = [generate_stub_prices(t, start_ts, end_ts) for t in missing]
+            synthetic_frames = [
+                generate_stub_prices(t, start_ts, end_ts) for t in missing
+            ]
             for s in synthetic_frames:
                 if not s.empty:
                     frames[s.name] = s
@@ -460,9 +466,13 @@ def sidebar_inputs() -> TearSheetInputs:
     if not tickers:
         tickers = [DEFAULT_TICKERS[0]]
 
-    start = st.sidebar.date_input("Start date", pd.Timestamp.today() - pd.DateOffset(years=5))
+    start = st.sidebar.date_input(
+        "Start date", pd.Timestamp.today() - pd.DateOffset(years=5)
+    )
     end = st.sidebar.date_input("End date", pd.Timestamp.today())
-    freq_label = st.sidebar.radio("Resample frequency", list(FREQUENCY_MAP.keys()), index=0)
+    freq_label = st.sidebar.radio(
+        "Resample frequency", list(FREQUENCY_MAP.keys()), index=0
+    )
 
     forecast_ticker = st.sidebar.selectbox(
         "Ticker for forecast preview",
@@ -518,7 +528,9 @@ def render_metrics(metrics: pd.DataFrame, freq_label: str) -> None:
     )
 
 
-def render_tabs(prices: pd.DataFrame, freq_label: str, forecast_inputs: TearSheetInputs) -> None:
+def render_tabs(
+    prices: pd.DataFrame, freq_label: str, forecast_inputs: TearSheetInputs
+) -> None:
     returns = compute_returns(prices)
     tab_price, tab_distribution, tab_forecast = st.tabs(
         ["Cumulative Returns", "Return Diagnostics", "Forecast Preview"]

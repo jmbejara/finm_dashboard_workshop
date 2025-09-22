@@ -70,11 +70,10 @@ def merge_stats(df_left, df_right, on=[]):
     return df_stats
 
 
-
 def dataframe_set_difference(dff, df, library="pandas", show="rows_and_numbers"):
     """
     Gives the rows that appear in dff but not in df
-    
+
     Example
     -------
     rows = data_frame_set_difference(dff, df)
@@ -101,15 +100,19 @@ def dataframe_set_difference(dff, df, library="pandas", show="rows_and_numbers")
     elif library == "polars":
         # Assuming dff and df have the same schema (column names and types)
         assert dff.columns == df.columns
-        
+
         # First, add a temporary column to each DataFrame with row numbers
         dff_with_index = dff.with_columns(pl.arange(0, dff.height).alias("row_number"))
-        df_with_index = df.with_columns(pl.arange(0, df.height).alias("dummy_row_number"))
-        
+        df_with_index = df.with_columns(
+            pl.arange(0, df.height).alias("dummy_row_number")
+        )
+
         # Perform an anti join to find rows in dff not present in df
         # Note: This requires the DataFrames to have columns to join on that define row uniqueness
 
-        diff = dff_with_index.join(df_with_index, on=list(dff.columns), how="anti", join_nulls=True)
+        diff = dff_with_index.join(
+            df_with_index, on=list(dff.columns), how="anti", join_nulls=True
+        )
 
         # Extract the row numbers of the differing rows
         row_numbers = diff.select("row_number").to_series(0).to_list()
@@ -123,6 +126,7 @@ def dataframe_set_difference(dff, df, library="pandas", show="rows_and_numbers")
 
     return ret
 
+
 def freq_counts(df, col=None, with_count=True, with_cum_freq=True):
     """Like value_counts, but normalizes to give frequency
     Polars function
@@ -133,15 +137,17 @@ def freq_counts(df, col=None, with_count=True, with_cum_freq=True):
     ```
     df.filter(
         (pl.col("fdate") > pl.datetime(2020,1,1)) &
-        (pl.col("bus_dt") == pl.col("fdate")) 
+        (pl.col("bus_dt") == pl.col("fdate"))
     ).pipe(freq_counts, col="bus_tenor_bin")
     ```
     """
     s = df[col]
-    ret = s.value_counts(sort=True).with_columns(
-        freq = pl.col("count") / s.shape[0] * 100,
-    ).with_columns(
-        cum_freq = pl.col("freq").cum_sum()
+    ret = (
+        s.value_counts(sort=True)
+        .with_columns(
+            freq=pl.col("count") / s.shape[0] * 100,
+        )
+        .with_columns(cum_freq=pl.col("freq").cum_sum())
     )
     if not with_count:
         ret = ret.drop("count")
@@ -332,9 +338,9 @@ def weighted_quantile(
     if sample_weight is None:
         sample_weight = np.ones(len(values))
     sample_weight = np.array(sample_weight)
-    assert np.all(quantiles >= 0) and np.all(
-        quantiles <= 1
-    ), "quantiles should be in [0, 1]"
+    assert np.all(quantiles >= 0) and np.all(quantiles <= 1), (
+        "quantiles should be in [0, 1]"
+    )
 
     if not values_sorted:
         sorter = np.argsort(values)
@@ -440,7 +446,6 @@ def load_date_mapping(
         dates = pd.concat([dates, pd.Series(bdate_remaining_year_range)])
 
     if add_estimated_historical_days:
-
         ## Check if the dvp holidays match with the SIFMA holidays for which
         # we have DVP data
         # pandas_market_calendars.get_calendar_names()
@@ -476,7 +481,6 @@ def load_date_mapping(
         dates = pd.concat([valid_days, dates])
 
     if add_estimated_future_dates:
-
         ## Construct future calendar
         # pandas_market_calendars.get_calendar_names()
         market_calendar = pandas_market_calendars.get_calendar("SIFMA_US")
@@ -572,7 +576,7 @@ def with_lagged_columns(
 
     Examples
     --------
-    
+
     ```
     >>> a=[
     ... ["A",'1990/1/1',1],

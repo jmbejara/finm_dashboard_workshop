@@ -25,20 +25,24 @@ https://wrds-www.wharton.upenn.edu/documents/400/CRSP_Programmers_Guide.pdf
 
 
 """
-import pandas as pd
-from pandas.tseries.offsets import MonthEnd, YearEnd
 
-import numpy as np
-import wrds
-
-import config
+import sys
 from pathlib import Path
 
-OUTPUT_DIR = Path(config.OUTPUT_DIR)
-DATA_DIR = Path(config.DATA_DIR)
-WRDS_USERNAME = config.WRDS_USERNAME
-# START_DATE = config.START_DATE
-# END_DATE = config.END_DATE
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from pathlib import Path
+
+import pandas as pd
+import wrds
+from pandas.tseries.offsets import MonthEnd
+
+from settings import config
+
+DATA_DIR = Path(config("DATA_DIR"))
+WRDS_USERNAME = config("WRDS_USERNAME")
+# START_DATE = config("START_DATE")
+# END_DATE = config("END_DATE")
 
 
 description_compustat = {
@@ -65,17 +69,17 @@ def pull_compustat(wrds_username=WRDS_USERNAME):
     See description_compustat for a description of the variables.
     """
     sql_query = """
-        SELECT 
+        SELECT
             gvkey, datadate, at, pstkl, txditc,
             pstkrv, seq, pstk
-        FROM 
+        FROM
             comp.funda
-        WHERE 
+        WHERE
             indfmt='INDL' AND -- industrial companies
             datafmt='STD' AND -- only standardized records
             popsrc='D' AND -- only from primary sources
             consol='C' AND -- consolidated financial statements
-            datadate >= '01/01/1959'
+            datadate >= '01/01/2015'
         """
     # with wrds.Connection(wrds_username=wrds_username) as db:
     #     comp = db.raw_sql(sql_query, date_cols=["datadate"])
@@ -111,16 +115,16 @@ def pull_CRSP_stock_ciz(wrds_username=WRDS_USERNAME):
     compute Fama-French factors. Use the new CIZ format.
     """
     sql_query = """
-        SELECT 
-            a.permno, a.permco, a.mthcaldt, 
-            a.issuertype, a.securitytype, a.securitysubtype, a.sharetype, 
-            a.usincflg, 
+        SELECT
+            a.permno, a.permco, a.mthcaldt,
+            a.issuertype, a.securitytype, a.securitysubtype, a.sharetype,
+            a.usincflg,
             a.primaryexch, a.conditionaltype, a.tradingstatusflg,
             a.mthret, a.mthretx, a.shrout, a.mthprc
-        FROM 
+        FROM
             crsp.msf_v2 AS a
-        WHERE 
-            a.mthcaldt BETWEEN '01/01/1959' AND '12/31/2022'
+        -- WHERE
+        --    a.mthcaldt BETWEEN '01/01/2015' AND '12/31/2025'
         """
 
     db = wrds.Connection(wrds_username=wrds_username)
@@ -128,10 +132,10 @@ def pull_CRSP_stock_ciz(wrds_username=WRDS_USERNAME):
     db.close()
 
     # change variable format to int
-    crsp_m[['permco','permno']]=crsp_m[['permco','permno']].astype(int)
+    crsp_m[["permco", "permno"]] = crsp_m[["permco", "permno"]].astype(int)
 
     # Line up date to be end of month
-    crsp_m['jdate']=crsp_m['mthcaldt']+MonthEnd(0)
+    crsp_m["jdate"] = crsp_m["mthcaldt"] + MonthEnd(0)
 
     return crsp_m
 
@@ -148,12 +152,12 @@ description_crsp_comp_link = {
 
 def pull_CRSP_Comp_Link_Table(wrds_username=WRDS_USERNAME):
     sql_query = """
-        SELECT 
+        SELECT
             gvkey, lpermno AS permno, linktype, linkprim, linkdt, linkenddt
-        FROM 
+        FROM
             crsp.ccmxpf_linktable
-        WHERE 
-            substr(linktype,1,1)='L' AND 
+        WHERE
+            substr(linktype,1,1)='L' AND
             (linkprim ='C' OR linkprim='P')
         """
     db = wrds.Connection(wrds_username=wrds_username)
@@ -163,56 +167,65 @@ def pull_CRSP_Comp_Link_Table(wrds_username=WRDS_USERNAME):
 
 
 def pull_Fama_French_factors(wrds_username=WRDS_USERNAME):
-    conn = wrds.Connection(wrds_username=config.WRDS_USERNAME)
+    conn = wrds.Connection(wrds_username=wrds_username)
     ff = conn.get_table(library="ff", table="factors_monthly")
     conn.close()
     ff[["smb", "hml"]] = ff[["smb", "hml"]].astype(float)
-    
+
     ff["date"] = pd.to_datetime(ff["date"])
     ff["date"] = ff["date"] + MonthEnd(0)
-    
+
     return ff
 
 
 def load_compustat(data_dir=DATA_DIR):
-    path = Path(data_dir) / "pulled" / "Compustat.parquet"
+    path = Path(data_dir) / "Compustat.parquet"
     comp = pd.read_parquet(path)
     return comp
 
 
 def load_CRSP_stock_ciz(data_dir=DATA_DIR):
-    path = Path(data_dir) / "pulled" / "CRSP_stock_ciz.parquet"
+    path = Path(data_dir) / "CRSP_stock_ciz.parquet"
     crsp = pd.read_parquet(path)
     return crsp
 
 
 def load_CRSP_Comp_Link_Table(data_dir=DATA_DIR):
-    path = Path(data_dir) / "pulled" / "CRSP_Comp_Link_Table.parquet"
+    path = Path(data_dir) / "CRSP_Comp_Link_Table.parquet"
     ccm = pd.read_parquet(path)
     return ccm
 
 
 def load_Fama_French_factors(data_dir=DATA_DIR):
-    path = Path(data_dir) / "pulled" / "FF_FACTORS.parquet"
+    path = Path(data_dir) / "FF_FACTORS.parquet"
     ff = pd.read_parquet(path)
     return ff
 
+
 def _demo():
     comp = load_compustat(data_dir=DATA_DIR)
+    comp.info()
     crsp = load_CRSP_stock_ciz(data_dir=DATA_DIR)
+    crsp.info()
     ccm = load_CRSP_Comp_Link_Table(data_dir=DATA_DIR)
+    ccm.info()
     ff = load_Fama_French_factors(data_dir=DATA_DIR)
+    ff.info()
 
 
 if __name__ == "__main__":
+    # Create subfolder
+    data_dir = DATA_DIR
+    data_dir.mkdir(parents=True, exist_ok=True)
+
     comp = pull_compustat(wrds_username=WRDS_USERNAME)
-    comp.to_parquet(DATA_DIR / "pulled" / "Compustat.parquet")
+    comp.to_parquet(data_dir / "Compustat.parquet")
 
     crsp = pull_CRSP_stock_ciz(wrds_username=WRDS_USERNAME)
-    crsp.to_parquet(DATA_DIR / "pulled" / "CRSP_stock_ciz.parquet")
+    crsp.to_parquet(data_dir / "CRSP_stock_ciz.parquet")
 
     ccm = pull_CRSP_Comp_Link_Table(wrds_username=WRDS_USERNAME)
-    ccm.to_parquet(DATA_DIR / "pulled" / "CRSP_Comp_Link_Table.parquet")
+    ccm.to_parquet(data_dir / "CRSP_Comp_Link_Table.parquet")
 
     ff = pull_Fama_French_factors(wrds_username=WRDS_USERNAME)
-    ff.to_parquet(DATA_DIR / "pulled" / "FF_FACTORS.parquet")
+    ff.to_parquet(data_dir / "FF_FACTORS.parquet")

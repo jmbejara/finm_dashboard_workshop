@@ -34,7 +34,7 @@ Turn your financial analyses into interactive web dashboards that look as polish
 
 Across both days you will scope, build, and present a custom financial dashboard:
 
-1. Identify a question or analysis that matters to you or your team.
+1. Identify a question or analysis that matters to you or your team. You might choose to explore a specific asset class or other dataset available in [ftsfr](https://github.com/jmbejara/ftsfr). 
 2. Use WRDS to collect, clean, and validate the underlying data.
 3. Prototype visualizations that surface the key findings.
 4. Assemble the final interactive dashboard in Streamlit and publish it locally, with optional guidance for hosting on the web.
@@ -44,7 +44,12 @@ Expect plenty of instructor feedback during the breakout blocks, plus practical 
 ## Preparation Checklist
 
 - Install an up-to-date Python environment (Anaconda recommended) and verify Streamlit runs locally with `streamlit hello`.
-- Confirm you can log into the WRDS platform ahead of time so we can dive straight into data.
+- Confirm you can log into the WRDS platform ahead of time so we can dive straight into data. Test with:
+  ```python
+  import wrds
+  db = wrds.Connection(wrds_username="your_username")
+  ```
+  You should see "Loading library list..." followed by "Done" - this confirms it worked. WRDS may prompt you to create a `.pgpass` file; select `Y` if asked.
 - Bring a laptop, charger, and any prior analysis you might want to showcase.
 - Consider a data question you are excited to explore; we will workshop ideas during the opening breakout.
 
@@ -79,4 +84,4 @@ WRDS_intro_and_web_queries.md
 
 ## Stay in Touch
 
-Questions, suggestions, or tweaks to the plan? Reach out anytime—Jeremy is refining the flow based on your feedback and is looking forward to building with you.
+Questions, suggestions, or tweaks to the plan? Reach out anytime. I am refining the flow based on your feedback and is looking forward to building with you.

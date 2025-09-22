@@ -19,7 +19,9 @@ import sys
 
 # -- Project information -----------------------------------------------------
 
-project = "From Data to Dashboard: Building Interactive Financial Visualizations in Python"
+project = (
+    "From Data to Dashboard: Building Interactive Financial Visualizations in Python"
+)
 copyright = "2024, Jeremiah Bejarano"
 author = "Jeremiah Bejarano"
 
@@ -36,7 +38,7 @@ extensions = [
     # "myst_parser",
     "sphinx.ext.intersphinx",
     # "numpydoc",
-    'myst_nb',
+    "myst_nb",
 ]
 
 myst_enable_extensions = [
@@ -113,4 +115,6 @@ html_title = "From Data to Dashboard"
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ["_static"]
 
-html_js_files = ["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"]
+html_js_files = [
+    "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"
+]

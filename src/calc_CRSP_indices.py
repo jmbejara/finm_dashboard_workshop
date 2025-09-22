@@ -1,6 +1,7 @@
 """
 Thank you to Tobias Rodriguez del Pozo for his assistance in writing this code.
 """
+
 import pandas as pd
 import numpy as np
 import config
