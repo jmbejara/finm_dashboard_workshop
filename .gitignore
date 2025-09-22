@@ -154,7 +154,7 @@ coverage.xml
 
 # Sphinx documentation
 /docs_src/apidocs
-/docs/
+# /docs/
 
 
 # PyBuilder
