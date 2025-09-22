@@ -1,10 +1,15 @@
-"""Utility script to pull CRSP data (with graceful fallbacks) and prepare a
-streamlit-friendly excerpt.
+"""Create the CRSP excerpt consumed by the Streamlit demos.
 
-The script attempts to use the WRDS connection defined in
-`src/load_CRSP_Compustat.py`. If the pull fails—because credentials are
-missing or the connection is blocked—it generates a synthetic sample so that the
-workshop exercises can proceed offline.
+This module assumes the `doit pull_crsp_data` task has already written the
+canonical WRDS pulls (``CRSP_stock_ciz.parquet`` et al.) into ``DATA_DIR``.
+We simply load that parquet, compute a small subset of metrics, and write out:
+
+* ``crsp_streamlit_excerpt.csv`` — tidy monthly prices/returns/market cap.
+* ``crsp_streamlit_excerpt.parquet`` — the same data in parquet form.
+* ``crsp_data_metadata.json`` — tiny metadata blob noting the source and size.
+
+If the parquet is missing (e.g., WRDS credentials unavailable), we fall back to
+a deterministic synthetic sample so the workshop can proceed offline.
 """
 
 from __future__ import annotations
@@ -17,7 +22,7 @@ import numpy as np
 import pandas as pd
 
 from settings import config
-from pull_CRSP_Compustat import pull_CRSP_stock_ciz
+from pull_CRSP_Compustat import load_CRSP_stock_ciz
 
 DATA_DIR = Path(config("DATA_DIR"))
 DEFAULT_INPUT = DATA_DIR / "CRSP_stock_ciz.parquet"
@@ -31,14 +36,15 @@ def ensure_directories() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def load_or_fetch_crsp() -> Tuple[pd.DataFrame, str]:
-    """Load CRSP data from disk or attempt a fresh pull."""
+def load_crsp_from_disk() -> Tuple[pd.DataFrame, str]:
+    """Load CRSP data produced by the WRDS pull task."""
 
     if DEFAULT_INPUT.exists():
-        return pd.read_parquet(DEFAULT_INPUT), "cached"
+        return load_CRSP_stock_ciz(data_dir=DATA_DIR), "cached"
 
-    df = pull_CRSP_stock_ciz(wrds_username=config("WRDS_USERNAME"))
-    return df, "wrds"
+    raise FileNotFoundError(
+        f"Could not locate {DEFAULT_INPUT}. Run `doit pull_crsp_data` first."
+    )
 
 
 def generate_synthetic_crsp() -> pd.DataFrame:
@@ -126,12 +132,12 @@ def write_outputs(df: pd.DataFrame, excerpt: pd.DataFrame, source: str) -> None:
 def main() -> Tuple[str, Path]:
     ensure_directories()
     try:
-        df, source = load_or_fetch_crsp()
+        df, source = load_crsp_from_disk()
         if df.empty:
-            raise ValueError("Fetched CRSP dataframe is empty")
+            raise ValueError("CRSP dataframe is empty")
     except Exception as exc:  # pylint: disable=broad-except
         # Provide feedback and fall back to synthetic data to keep the workshop moving.
-        print(f"CRSP pull failed ({exc}); generating synthetic sample instead.")
+        print(f"CRSP load failed ({exc}); generating synthetic sample instead.")
         df = generate_synthetic_crsp()
         source = "synthetic"
 
@@ -143,3 +149,22 @@ def main() -> Tuple[str, Path]:
 
 if __name__ == "__main__":
     main()
+
+
+def _preview_excerpt() -> None:  # pragma: no cover - manual exploration helper
+    """Quick-and-dirty snippet for inspecting the excerpt interactively."""
+
+    import matplotlib.pyplot as plt
+
+    if not EXCERPT_CSV.exists():
+        print("Excerpt not found. Run `doit create_crsp_excerpt` first.")
+        return
+
+    df = pd.read_csv(EXCERPT_CSV, parse_dates=["date"])
+    print("Excerpt head:\n", df.head())
+    print("Tickers:", df["ticker"].unique())
+
+    pivot = df.pivot(index="date", columns="ticker", values="price")
+    pivot.plot(title="Excerpt Prices (Growth of $1 approx)")
+    plt.tight_layout()
+    plt.show()

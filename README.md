@@ -51,3 +51,6 @@ The workshop leans on the external [FTSFR](https://github.com/jmbejara/ftsfr) re
 
 ## Need Help?
 Reach out to Jeremy Bejarano (jeremiah.bejarano@gmail.com). Issues and pull requests are welcome if you spot improvements for the workshop materials.
+
+## Misc
+`ruff format . && ruff check --fix --show-fixes . && ruff check .`

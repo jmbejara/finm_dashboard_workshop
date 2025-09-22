@@ -10,7 +10,6 @@ import shutil
 import sys
 from pathlib import Path
 from typing import Iterable
-import subprocess
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
@@ -51,7 +50,7 @@ def task_create_crsp_excerpt():
     return {
         "actions": [
             "python ./src/build_crsp_data.py",
-            ],
+        ],
         "file_dep": [
             DATA_DIR / "CRSP_stock_ciz.parquet",
             "./src/build_crsp_data.py",
