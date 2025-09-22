@@ -48,25 +48,25 @@ doit --version
 ## Core Workflows
 1. **Pull Bloomberg data (optional)**
    ```bash
-doit -f dodo_00_pull_bloomberg.py
+    doit -f dodo_00_pull_bloomberg.py
    ```
    Only run this on a machine with the Bloomberg Desktop API configured and `bloomberg = true` in `subscriptions.toml`.
 
 2. **Pull WRDS/Public datasets**
    ```bash
-doit -f dodo_01_pull.py
+    doit -f dodo_01_pull.py
    ```
    Targets arrive under `_data/<dataset>/` as parquet + metadata.
 
 3. **Run forecasting jobs**
    ```bash
-doit -f dodo_02_forecasting.py
+    doit -f dodo_02_forecasting.py
    ```
    Generates prediction CSVs, error metrics, and timing logs in `_output/forecasting/`.
 
 4. **Build documentation/paper (optional)**
    ```bash
-doit -f dodo_03_paper.py
+    doit -f dodo_03_paper.py
    ```
    Rebuilds the static site and compiles `reports/draft_ftsfr.tex`.
 

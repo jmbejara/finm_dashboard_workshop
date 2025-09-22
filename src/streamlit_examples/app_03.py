@@ -2,32 +2,46 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from datetime import datetime, timedelta
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-
-DATA_PATH = Path(__file__).with_name("sample_prices.csv")
+import yfinance as yf
 
 st.set_page_config(page_title="Streamlit Example 03", page_icon="📊", layout="wide")
 
 st.title("Exploring Sample Price Data")
 st.write(
-    "This app introduces a simple navigation pattern and loads a CSV file bundled with the workshop "
-    "materials. Use it as a stepping stone between the hello-world example and the full dashboard demo."
+    "This app introduces a simple navigation pattern and loads price data from Yahoo Finance. "
+    "Use it as a stepping stone between the hello-world example and the full dashboard demo."
 )
 
 
 @st.cache_data(show_spinner=False)
 def load_prices() -> pd.DataFrame:
-    if not DATA_PATH.exists():
-        st.error("Could not find sample_prices.csv next to this script.")
-        return pd.DataFrame()
+    tickers = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=365 * 2)
 
-    data = pd.read_csv(DATA_PATH, parse_dates=["date"], index_col="date")
-    data.index.name = "date"
-    return data
+    try:
+        data = yf.download(
+            tickers=tickers,
+            start=start_date,
+            end=end_date,
+            auto_adjust=True,
+            progress=False
+        )
+
+        closes = data["Close"].copy()
+        if isinstance(closes, pd.Series):
+            closes = closes.to_frame()
+        closes.index.name = "date"
+        closes = closes.dropna(how="all")
+        return closes
+    except Exception as e:
+        st.error(f"Error fetching data from Yahoo Finance: {e}")
+        return pd.DataFrame()
 
 
 def render_overview(prices: pd.DataFrame) -> None:

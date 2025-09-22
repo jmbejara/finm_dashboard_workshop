@@ -16,9 +16,9 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import config  # noqa: E402
+from settings import config  # noqa: E402
 
-DATA_DIR = Path(config.DATA_DIR)
+DATA_DIR = Path(config("DATA_DIR"))
 EXCERPT_PATH = DATA_DIR / "crsp_streamlit_excerpt.csv"
 PERIODS_PER_YEAR = 12
 
