@@ -14,6 +14,7 @@
 
 # Secrets saved in environment files
 .env*
+!.env.example
 
 # Other
 temp*.csv
