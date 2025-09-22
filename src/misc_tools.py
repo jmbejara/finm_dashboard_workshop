@@ -385,7 +385,7 @@ def load_date_mapping(
     future_end="2092-01-01",
 ):
     data_dir = Path(data_dir)
-    df_dm = pd.read_csv(data_dir / "derived" / "all_dates_dvp.csv", header=None)
+    df_dm = pd.read_csv(data_dir / "all_dates_dvp.csv", header=None)
     df_dm = df_dm.rename(columns={0: "date"})
     df_dm["date"] = pd.to_datetime(df_dm["date"])
     dvp_data_dates = df_dm["date"].copy()

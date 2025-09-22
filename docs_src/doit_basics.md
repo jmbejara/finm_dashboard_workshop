@@ -28,9 +28,9 @@ What happens:
 1. `src/build_crsp_data.py` tries to connect to WRDS using the credentials in `src/config.py` (populated from `.env`).
 2. If the pull succeeds, data is written to `data/pulled/CRSP_stock_ciz.parquet`; otherwise a synthetic dataset is generated for offline practice.
 3. A workshop-friendly excerpt is saved to:
-   - `data/derived/crsp_streamlit_excerpt.csv`
-   - `data/derived/crsp_streamlit_excerpt.parquet`
-   - `data/derived/crsp_data_metadata.json`
+   - `_data/crsp_streamlit_excerpt.csv`
+   - `_data/crsp_streamlit_excerpt.parquet`
+   - `_data/crsp_data_metadata.json`
 4. `app_04_crsp.py` reads the CSV excerpt, so relaunch the app after rerunning `doit` to see fresh data.
 
 ## Building and Publishing the Docs

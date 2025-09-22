@@ -24,7 +24,7 @@ Each app can be launched with `streamlit run <path-to-app.py>`. Use a new termin
 - Try customizing: connect the loader to your CRSP extract, restyle the Plotly charts, or replace the log-return forecast with an FTSFR-generated CSV.
 
 ## App 04 – CRSP Snapshot (`src/streamlit_examples/app_04_crsp.py`)
-- Mirrors the tear-sheet layout but reads the excerpt created by `doit pull_crsp_data` (`data/derived/crsp_streamlit_excerpt.csv`).
+- Mirrors the tear-sheet layout but reads the excerpt created by `doit pull_crsp_data` (`_data/crsp_streamlit_excerpt.csv`).
 - Ideal for demonstrating how WRDS pulls flow through the pipeline: rerun `doit` and refresh the app to see new tickers or time ranges.
 - Try customizing: surface additional CRSP attributes (e.g., shares outstanding, market cap rankings) or add narrative callouts describing the trends you observe.
 

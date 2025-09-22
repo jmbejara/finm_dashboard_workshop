@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT))
 import config  # noqa: E402
 
 DATA_DIR = Path(config.DATA_DIR)
-EXCERPT_PATH = DATA_DIR / "derived" / "crsp_streamlit_excerpt.csv"
+EXCERPT_PATH = DATA_DIR / "crsp_streamlit_excerpt.csv"
 PERIODS_PER_YEAR = 12
 
 st.set_page_config(

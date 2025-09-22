@@ -21,17 +21,14 @@ from pull_CRSP_Compustat import pull_CRSP_stock_ciz
 
 DATA_DIR = Path(config("DATA_DIR"))
 DEFAULT_INPUT = DATA_DIR / "CRSP_stock_ciz.parquet"
-PULLED_DIR = DATA_DIR
-DERIVED_DIR = DATA_DIR / "derived"
 DEFAULT_OUTPUT = DEFAULT_INPUT
-EXCERPT_CSV = DERIVED_DIR / "crsp_streamlit_excerpt.csv"
-EXCERPT_PARQUET = DERIVED_DIR / "crsp_streamlit_excerpt.parquet"
-METADATA_JSON = DERIVED_DIR / "crsp_data_metadata.json"
+EXCERPT_CSV = DATA_DIR / "crsp_streamlit_excerpt.csv"
+EXCERPT_PARQUET = DATA_DIR / "crsp_streamlit_excerpt.parquet"
+METADATA_JSON = DATA_DIR / "crsp_data_metadata.json"
 
 
 def ensure_directories() -> None:
-    PULLED_DIR.mkdir(parents=True, exist_ok=True)
-    DERIVED_DIR.mkdir(parents=True, exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_or_fetch_crsp() -> Tuple[pd.DataFrame, str]:

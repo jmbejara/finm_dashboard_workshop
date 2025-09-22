@@ -44,7 +44,7 @@ Customize the apps during the workshop and use them as scaffolds for your final 
 ## Automation & Data
 - `dodo.py` – defines the `doit` tasks (CRSP pull, excerpt creation, Sphinx build/publish).
 - `src/build_crsp_data.py` – orchestrates the WRDS pull or synthetic fallback and writes the Streamlit-ready CSV/parquet.
-- Data outputs live under `_data/` (generated) and `_data/derived/` (Streamlit excerpt + metadata).
+- Data outputs live under `_data/` (both the raw pulls and the Streamlit excerpt/metadata).
 
 ## FTSFR Integration
 The workshop leans on the external [FTSFR](https://github.com/jmbejara/ftsfr) repository for larger WRDS/Bloomberg datasets and forecasting utilities. See `docs_src/intro_to_ftsfr_data.md` for setup instructions, environment configuration, and recommended tasks (`dodo_01_pull.py`, `dodo_02_forecasting.py`, etc.). Once you pull datasets there, point the Streamlit loaders in this repo to the exported parquet/CSV files.
