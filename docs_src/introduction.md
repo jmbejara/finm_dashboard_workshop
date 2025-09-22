@@ -20,6 +20,6 @@ Welcome to **From Data to Dashboard: Building Interactive Financial Visualizatio
 Throughout both sessions we’ll alternate short lectures with guided labs and open build time. Bring a laptop, a WRDS account if you have one, and a short list of analyses you’re excited to visualize.
 
 ## Staying in Touch
-Questions or blockers? Reach out on Slack or email (jbejarano@uchicago.edu). I’ll hold office hours during the breakout blocks and can schedule 1:1 time if you need extra debugging help.
+Questions or blockers? Reach out by email (jbejarano@uchicago.edu). I’ll provide help during the breakout blocks and can schedule 1:1 time if you need extra debugging help.
 
-Let’s build something you’ll be proud to demo.
+Let’s build something you’ll be proud to demo. When you’ve read through this introduction, move to the [quick Streamlit example](quick_streamlit_example.md) and launch `app_01.py` for an inspirational preview.

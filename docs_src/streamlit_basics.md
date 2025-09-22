@@ -1,6 +1,6 @@
 # Streamlit App Progression
 
-We use four small apps to highlight how quickly Streamlit scales from a single chart to a data-rich dashboard. Run them in order to see how each layer adds new concepts.
+We use four small apps to highlight how quickly Streamlit scales from a single chart to a data-rich dashboard. Run them in order to see how each layer adds new concepts. By now you should have executed `doit pull_crsp_data`, so the `_data/crsp_streamlit_excerpt.csv` file exists for the later examples.
 
 ## Environment
 ```bash
@@ -17,11 +17,6 @@ Each app can be launched with `streamlit run <path-to-app.py>`. Use a new termin
 - Introduces cached CSV loading (`@st.cache_data`), sidebar navigation, and Plotly Express visuals.
 - Defaults to `sample_prices.csv`, but it’s designed to load any WRDS/CRSP export—replace the file with your own data slice when you’re ready.
 - Try customizing: add a second tab for distribution plots, expand the summary table with Sharpe/Sortino ratios, or link to the Streamlit Cloud deployment instructions.
-
-## App 01 – Tear Sheet (`src/streamlit_examples/app_01.py`)
-- Full dashboard experience: multi-ticker selection, annualized metrics, cumulative performance, histogram of returns, and a naïve forecast preview.
-- Uses `yfinance` by default but gracefully falls back to bundled sample data or synthetic prices, so you can experiment offline.
-- Try customizing: connect the loader to your CRSP extract, restyle the Plotly charts, or replace the log-return forecast with an FTSFR-generated CSV.
 
 ## App 04 – CRSP Snapshot (`src/streamlit_examples/app_04_crsp.py`)
 - Mirrors the tear-sheet layout but reads the excerpt created by `doit pull_crsp_data` (`_data/crsp_streamlit_excerpt.csv`).

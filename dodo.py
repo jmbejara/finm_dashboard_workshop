@@ -66,6 +66,25 @@ def task_create_crsp_excerpt():
     }
 
 
+def task_pull_yfinance():
+    """Download benchmark yfinance data for the Streamlit fallback."""
+
+    return {
+        "actions": [
+            "python ./src/pull_yfinance.py",
+        ],
+        "file_dep": [
+            "./src/pull_yfinance.py",
+            "./src/settings.py",
+        ],
+        "targets": [
+            DATA_DIR / "yfinance_prices.parquet",
+            DATA_DIR / "yfinance_prices.csv",
+        ],
+        "clean": True,
+    }
+
+
 def _iter_docs_dependencies() -> Iterable[str]:
     return sorted(str(path) for path in DOCS_SRC_DIR.rglob("*") if path.is_file())
 

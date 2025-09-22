@@ -1,6 +1,6 @@
 # Automation with `doit`
 
-This repository uses [`doit`](https://pydoit.org/) to glue together data pulls, documentation builds, and other repeatable tasks. Think of it as a light-weight, Python-friendly alternative to a Makefile.
+This repository uses [`doit`](https://pydoit.org/) to glue together data pulls, documentation builds, and other repeatable tasks. Think of it as a light-weight, Python-friendly alternative to a Makefile. Run this before customizing the Streamlit apps so the CRSP excerpt exists.
 
 ## Installation
 ```bash
@@ -25,9 +25,9 @@ Key tasks:
 doit pull_crsp_data
 ```
 What happens:
-1. `src/build_crsp_data.py` tries to connect to WRDS using the credentials in `src/config.py` (populated from `.env`).
-2. If the pull succeeds, data is written to `data/pulled/CRSP_stock_ciz.parquet`; otherwise a synthetic dataset is generated for offline practice.
-3. A workshop-friendly excerpt is saved to:
+1. `src/pull_CRSP_Compustat.py` runs first (via `dodo.py`) and writes the WRDS pulls into `_data/`.
+2. `src/build_crsp_data.py` loads those parquet files and produces a tidy excerpt.
+3. The excerpt artifacts land at:
    - `_data/crsp_streamlit_excerpt.csv`
    - `_data/crsp_streamlit_excerpt.parquet`
    - `_data/crsp_data_metadata.json`

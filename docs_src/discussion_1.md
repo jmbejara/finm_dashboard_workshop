@@ -3,8 +3,9 @@
 Day 1 is all about getting you access to the data and getting you up and running with a few example codes. This will allow you to iterate overnight and be ready for the next day.
 
 - Start with the [workshop introduction](introduction.md) to revisit goals, prerequisites, and how the two days fit together.
-- Walk through the [Streamlit basics](streamlit_basics.md) document while we demo the four scaffold apps.
-- Follow the [doit basics](doit_basics.md) guide to run the automation pipeline (`doit pull_crsp_data` → publish docs).
+- Immediately launch the [quick Streamlit example](quick_streamlit_example.md) to run `app_01.py` and see the end goal.
+- Follow the [doit basics](doit_basics.md) guide to prepare the CRSP excerpt and rebuild the docs (`doit pull_crsp_data` → publish docs).
+- After the excerpt exists, dive into [Streamlit basics](streamlit_basics.md) to customize the progressive apps.
 - Use [Intro to FTSFR data](intro_to_ftsfr_data.md) as a reference once you’re ready to clone the external repository.
 
 ## Session Goals
@@ -40,7 +41,8 @@ Day 1 is all about getting you access to the data and getting you up and running
 :maxdepth: 1
 :hidden:
 introduction.md
-streamlit_basics.md
+quick_streamlit_example.md
 doit_basics.md
+streamlit_basics.md
 intro_to_ftsfr_data.md
 ```
