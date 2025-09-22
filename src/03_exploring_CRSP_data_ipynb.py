@@ -24,9 +24,6 @@ import wrds
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from datetime import datetime, timedelta
 
 import config
 
@@ -282,7 +279,7 @@ Let's verify our data quality and check for any duplicate entries.
 
 # %%
 # Debug: Check for duplicate dates in selected data
-print(f"\n=== Data Quality Check ===")
+print("\n=== Data Quality Check ===")
 print(f"Selected stocks data shape: {selected_data.shape}")
 print(
     f"Duplicate ticker-date combinations: {selected_data.duplicated(subset=['ticker', 'dlycaldt']).sum()}"
@@ -293,7 +290,7 @@ print(
 )
 
 # Show sample of selected data
-print(f"\nSample of selected data:")
+print("\nSample of selected data:")
 print(selected_data[["ticker", "dlycaldt", "dlyret"]].head(10))
 
 # %%

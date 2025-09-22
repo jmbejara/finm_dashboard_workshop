@@ -60,9 +60,12 @@ Expect plenty of instructor feedback during the breakout blocks, plus practical 
 - [Using CRSP Data](using_CRSP_data.md) — background on a high-value WRDS dataset you might draw from.
 - [WRDS Intro and Web Queries](WRDS_intro_and_web_queries.md) — step-by-step guide to pulling data for your dashboard.
 
+
+
 ```{toctree}
 :maxdepth: 1
 :caption: Workshop Sessions 📈
+:hidden:
 discussion_1.md
 discussion_2.md
 discussion_3.md

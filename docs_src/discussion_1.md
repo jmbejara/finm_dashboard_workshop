@@ -1,6 +1,6 @@
 # Discussion 1 – Kickoff & Dashboard Preview
 
-Day 1 is all about orienting ourselves, exploring the tooling, and leaving with everything installed so you can iterate overnight.
+Day 1 is all about getting you access to the data and getting you up and running with a few example codes. This will allow you to iterate overnight and be ready for the next day.
 
 - Start with the [workshop introduction](introduction.md) to revisit goals, prerequisites, and how the two days fit together.
 - Walk through the [Streamlit basics](streamlit_basics.md) document while we demo the four scaffold apps.
@@ -9,20 +9,21 @@ Day 1 is all about orienting ourselves, exploring the tooling, and leaving with 
 
 ## Session Goals
 - Understand the workshop deliverable and how we’ll collaborate over the next two days.
-- Launch and customize the Streamlit examples (`app_02`, `app_03`, `app_01`, `app_04_crsp`).
+- Launch and customize the Streamlit examples (`app_01`, `app_02`, `app_03`, `app_04_crsp`).
 - Run the `doit` pipeline to produce a CRSP excerpt and rebuild the documentation site.
 - Confirm you can clone the FTSFR repo and pull WRDS data (or capture questions if credentials are pending).
 
 ## Agenda — Day 1
 
 ### Segment A · Lecture & Live Demo (12:00 – 1:30 pm)
-1. Orientation: revisit goals, grading rubric, and deployment expectations.
-2. Progressive Streamlit tour (apps 02 → 03 → 01 → 04) with code comparisons.
-3. Discussion: what makes a financial dashboard credible? Capture criteria the group agrees on.
+1. Orientation: Who am I? What are the goals of the workshop?
+2. Progressive Streamlit tour with code comparisons.
+3. Discussion: What makes a financial dashboard useful? 
+4. Preview the Financial Time-Series Forecasting Repository (FTSFR) and how it fits into the workshop. What other asset classes might you be interested in?
 
 ### Segment B · Breakout Lab (1:30 – 2:30 pm)
-- Customize the hello world app, point the intermediate app to a new CSV, and run `doit pull_crsp_data` so `app_04_crsp.py` reflects your own data slice.
-- Optional stretch: attempt a Streamlit Community Cloud deployment of your favorite variant.
+- Customize the hello world app, point the intermediate app to a new CSV (maybe from FTSFR)
+- Develop your own visualizations of the data (e.g., from a different asset class)
 
 ### Segment C · Lecture & Guided Walkthrough (2:30 – 4:00 pm)
 1. Deep dive on `doit` and the Sphinx publishing flow.

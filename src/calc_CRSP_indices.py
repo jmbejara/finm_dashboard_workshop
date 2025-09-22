@@ -11,7 +11,6 @@ DATA_DIR = config.DATA_DIR
 
 import misc_tools
 import load_CRSP_stock
-import load_CRSP_Compustat
 
 
 def calc_equal_weighted_index(df):

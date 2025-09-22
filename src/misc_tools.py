@@ -971,7 +971,7 @@ def plot_weighted_median_with_distribution_bars(
             ylabel = f"{variable_name}"
     ax.set_ylabel(ylabel)
 
-    if not (xlabel is None):
+    if xlabel is not None:
         ax.set_xlabel(xlabel)
 
     plt.tight_layout()

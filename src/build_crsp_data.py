@@ -16,13 +16,14 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 
-import config
-from load_CRSP_Compustat import pull_CRSP_stock_ciz
+from settings import config
+from pull_CRSP_Compustat import pull_CRSP_stock_ciz
 
-DATA_DIR = Path(config.DATA_DIR)
-PULLED_DIR = DATA_DIR / "pulled"
+DATA_DIR = Path(config("DATA_DIR"))
+DEFAULT_INPUT = DATA_DIR / "CRSP_stock_ciz.parquet"
+PULLED_DIR = DATA_DIR
 DERIVED_DIR = DATA_DIR / "derived"
-DEFAULT_OUTPUT = PULLED_DIR / "CRSP_stock_ciz.parquet"
+DEFAULT_OUTPUT = DEFAULT_INPUT
 EXCERPT_CSV = DERIVED_DIR / "crsp_streamlit_excerpt.csv"
 EXCERPT_PARQUET = DERIVED_DIR / "crsp_streamlit_excerpt.parquet"
 METADATA_JSON = DERIVED_DIR / "crsp_data_metadata.json"
@@ -33,9 +34,14 @@ def ensure_directories() -> None:
     DERIVED_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def fetch_live_crsp() -> pd.DataFrame:
-    """Attempt to pull CRSP monthly stock data via WRDS."""
-    return pull_CRSP_stock_ciz(wrds_username=config.WRDS_USERNAME)
+def load_or_fetch_crsp() -> Tuple[pd.DataFrame, str]:
+    """Load CRSP data from disk or attempt a fresh pull."""
+
+    if DEFAULT_INPUT.exists():
+        return pd.read_parquet(DEFAULT_INPUT), "cached"
+
+    df = pull_CRSP_stock_ciz(wrds_username=config("WRDS_USERNAME"))
+    return df, "wrds"
 
 
 def generate_synthetic_crsp() -> pd.DataFrame:
@@ -123,10 +129,9 @@ def write_outputs(df: pd.DataFrame, excerpt: pd.DataFrame, source: str) -> None:
 def main() -> Tuple[str, Path]:
     ensure_directories()
     try:
-        df = fetch_live_crsp()
+        df, source = load_or_fetch_crsp()
         if df.empty:
             raise ValueError("Fetched CRSP dataframe is empty")
-        source = "wrds"
     except Exception as exc:  # pylint: disable=broad-except
         # Provide feedback and fall back to synthetic data to keep the workshop moving.
         print(f"CRSP pull failed ({exc}); generating synthetic sample instead.")
