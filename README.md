@@ -50,7 +50,7 @@ Customize the apps during the workshop and use them as scaffolds for your final 
 The workshop leans on the external [FTSFR](https://github.com/jmbejara/ftsfr) repository for larger WRDS/Bloomberg datasets and forecasting utilities. See `docs_src/intro_to_ftsfr_data.md` for setup instructions, environment configuration, and recommended tasks (`dodo_01_pull.py`, `dodo_02_forecasting.py`, etc.). Once you pull datasets there, point the Streamlit loaders in this repo to the exported parquet/CSV files.
 
 ## Need Help?
-Reach out to Jeremy Bejarano (jeremiah.bejarano@gmail.com). Issues and pull requests are welcome if you spot improvements for the workshop materials.
+Reach out to Jeremy Bejarano (jbejarano@uchicago.edu). Issues and pull requests are welcome if you spot improvements for the workshop materials.
 
 ## Misc
 `ruff format . && ruff check --fix --show-fixes . && ruff check .`

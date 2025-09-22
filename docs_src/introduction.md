@@ -20,6 +20,6 @@ Welcome to **From Data to Dashboard: Building Interactive Financial Visualizatio
 Throughout both sessions we’ll alternate short lectures with guided labs and open build time. Bring a laptop, a WRDS account if you have one, and a short list of analyses you’re excited to visualize.
 
 ## Staying in Touch
-Questions or blockers? Reach out on Slack or email (jeremiah.bejarano@gmail.com). I’ll hold office hours during the breakout blocks and can schedule 1:1 time if you need extra debugging help.
+Questions or blockers? Reach out on Slack or email (jbejarano@uchicago.edu). I’ll hold office hours during the breakout blocks and can schedule 1:1 time if you need extra debugging help.
 
 Let’s build something you’ll be proud to demo.
