@@ -5,6 +5,17 @@ This repository accompanies the **From Data to Dashboard: Building Interactive F
 ## Documentation
 The full workshop guide lives in `docs_src/index.md`. You can browse the rendered version by running `doit publish_docs` (see below) and opening the generated pages under `docs/`.
 
+## Required Software & Accounts
+- **Python 3.11+ (Anaconda recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution) and verify `streamlit hello` runs locally.
+- **Editor** – VS Code with the Python/Jupyter extensions or your preferred IDE.
+- **Git & GitHub** – Install [Git](https://git-scm.com/downloads) and make sure you have a GitHub account for sharing/deployment.
+- **WRDS credentials** – Request access early and test the connection:
+  ```python
+  import wrds
+  db = wrds.Connection(wrds_username="your_username")
+  ```
+  Select `Y` if prompted to create a `.pgpass` file.
+
 ## Quick Start
 ```bash
 # Clone the repo and install dependencies
