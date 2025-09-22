@@ -164,6 +164,9 @@ def _copy_html_to_docs() -> None:
         else:
             shutil.copy2(item, target)
 
+    nojekyll = DOCS_DIR / ".nojekyll"
+    nojekyll.write_text("\n")
+
 
 def task_publish_docs():
     """Copy the built HTML into `docs/` for publishing."""
