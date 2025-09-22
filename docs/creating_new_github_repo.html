@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Stand Up Your Workshop Repository &#8212; From Data to Dashboard</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'creating_new_github_repo';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploy to Streamlit Community Cloud" href="deploying_streamlit_app.html" />
+    <link rel="prev" title="Discussion 3 – Ship It &amp; Forecast" href="discussion_3.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="From Data to Dashboard - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="From Data to Dashboard - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    From Data to Dashboard: Building Interactive Financial Visualizations in Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshop Sessions 📈</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussion_1.html">Discussion 1 – Kickoff &amp; Dashboard Preview</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Workshop Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_streamlit_example.html">Quick Streamlit Inspiration (<code class="docutils literal notranslate"><span class="pre">app_01.py</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="doit_basics.html">Automation with <code class="docutils literal notranslate"><span class="pre">doit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="streamlit_basics.html">Streamlit App Progression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_to_ftsfr_data.html">Intro to the FTSFR Repository</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_2.html">Discussion 2 – Benchmarking &amp; Forecasting</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="discussion_3.html">Discussion 3 – Ship It &amp; Forecast</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Stand Up Your Workshop Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploying_streamlit_app.html">Deploy to Streamlit Community Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series_forecasting.html">Nixtla and StatsForecast — End to End Walkthrough</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_4.html">Discussion 4 – Showcase &amp; Community</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful References 📖</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="myst_markdown_demos.html">MyST Markdown Demos 💡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syncing_files_with_git_and_github.html">Syncing Files with Git and GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_CRSP_data.html">Using CRSP Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WRDS_intro_and_web_queries.html">Introduction to WRDS</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop/issues/new?title=Issue%20on%20page%20%2Fcreating_new_github_repo.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/creating_new_github_repo.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Stand Up Your Workshop Repository</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-you-begin">Before You Begin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-repository-on-github">1. Create the Repository on GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-the-repo-locally">2. Clone the Repo Locally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-your-app-skeleton">3. Stage Your App Skeleton</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-working-tree">4. Check the Working Tree</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-changes-with-diffs">5. Inspect Changes with Diffs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-intentionally">6. Stage Intentionally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commit-with-context">7. Commit with Context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#push-to-github">8. Push to GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-remote">9. Verify the Remote</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ongoing-workflow-tips">10. Ongoing Workflow Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="stand-up-your-workshop-repository">
+<h1>Stand Up Your Workshop Repository<a class="headerlink" href="#stand-up-your-workshop-repository" title="Link to this heading">#</a></h1>
+<p>Get your Streamlit app under version control so you can collaborate, deploy, and iterate without fear. Follow this lab as a checklist—by the end, you’ll have a clean GitHub repository that contains only the code and assets required to run your app.</p>
+<section id="before-you-begin">
+<h2>Before You Begin<a class="headerlink" href="#before-you-begin" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Git and VS Code (or your editor of choice) installed locally</p></li>
+<li><p>GitHub account verified with 2FA</p></li>
+<li><p>Streamlit app files in a working directory on your laptop</p></li>
+<li><p>Conda environment activated (<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">finm</span></code>) so your terminal is ready for later steps</p></li>
+</ul>
+</section>
+<section id="create-the-repository-on-github">
+<h2>1. Create the Repository on GitHub<a class="headerlink" href="#create-the-repository-on-github" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Visit <a class="github reference external" href="https://github.com/new">new</a>.</p></li>
+<li><p>Name the repo something descriptive (e.g., <code class="docutils literal notranslate"><span class="pre">finm-dashboard-&lt;teamname&gt;</span></code>).</p></li>
+<li><p>Keep <strong>Public</strong> checked so Streamlit Community Cloud can access it.</p></li>
+<li><p>Add a short description and initialize with a <code class="docutils literal notranslate"><span class="pre">README.md</span></code>. Skip adding a <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>—we’ll create it locally so you can customize exclusions.</p></li>
+<li><p>Click <strong>Create repository</strong> and copy the repository URL (<code class="docutils literal notranslate"><span class="pre">https://github.com/&lt;user&gt;/&lt;repo&gt;.git</span></code> or SSH variant if you’ve configured keys).</p></li>
+</ol>
+</section>
+<section id="clone-the-repo-locally">
+<h2>2. Clone the Repo Locally<a class="headerlink" href="#clone-the-repo-locally" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace with your GitHub username and repository name</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/&lt;user&gt;/&lt;repo&gt;.git
+<span class="nb">cd</span><span class="w"> </span>&lt;repo&gt;
+</pre></div>
+</div>
+<p>If you prefer SSH and have already uploaded your public key to GitHub:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:&lt;user&gt;/&lt;repo&gt;.git
+</pre></div>
+</div>
+<p>Tip: Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">-v</span></code> to confirm the clone points to the correct origin.</p>
+</section>
+<section id="stage-your-app-skeleton">
+<h2>3. Stage Your App Skeleton<a class="headerlink" href="#stage-your-app-skeleton" title="Link to this heading">#</a></h2>
+<p>Organize your Streamlit app inside the repo. A typical structure looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── README.md
+├── requirements.txt
+└── app.py  # or src/streamlit_app.py
+</pre></div>
+</div>
+<p>Copy or move in only the files needed to run the app:</p>
+<ul class="simple">
+<li><p>Core Streamlit script(s)</p></li>
+<li><p>Lightweight data samples (small CSV/Parquet files) if the app requires them</p></li>
+<li><p>Supporting modules or utility scripts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> listing runtime dependencies
+Avoid committing secrets, WRDS credentials, or large raw datasets—leave those out or reference them in the README.</p></li>
+</ul>
+</section>
+<section id="check-the-working-tree">
+<h2>4. Check the Working Tree<a class="headerlink" href="#check-the-working-tree" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>status
+</pre></div>
+</div>
+<p>You should see your new files listed as “untracked.” If anything unexpected appears (e.g., <code class="docutils literal notranslate"><span class="pre">__pycache__/</span></code>, <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code>), create a <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> now:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;__pycache__/\n.DS_Store\n_data/&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.gitignore
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> again to ensure only the files you intend to share remain.</p>
+</section>
+<section id="inspect-changes-with-diffs">
+<h2>5. Inspect Changes with Diffs<a class="headerlink" href="#inspect-changes-with-diffs" title="Link to this heading">#</a></h2>
+<p>Before staging, review what will be committed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>diff<span class="w"> </span>--<span class="w"> </span>app.py
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">diff</span> <span class="pre">--staged</span></code> later to double-check staged content. Encourage teammates to glance at diffs before every commit—this prevents surprises in your history.</p>
+</section>
+<section id="stage-intentionally">
+<h2>6. Stage Intentionally<a class="headerlink" href="#stage-intentionally" title="Link to this heading">#</a></h2>
+<p>Add files explicitly rather than using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">.</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>app.py<span class="w"> </span>requirements.txt<span class="w"> </span>README.md<span class="w"> </span>.gitignore
+</pre></div>
+</div>
+<p>If you have subdirectories, list them by path (e.g., <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">src/streamlit_components.py</span></code>). Keeping the staging step intentional reinforces that only production-ready assets land in the repo.</p>
+</section>
+<section id="commit-with-context">
+<h2>7. Commit with Context<a class="headerlink" href="#commit-with-context" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add initial Streamlit app scaffold&quot;</span>
+</pre></div>
+</div>
+<p>Commit messages should describe <em>why</em> the change matters. Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">CRSP</span> <span class="pre">return</span> <span class="pre">visualization</span> <span class="pre">to</span> <span class="pre">main</span> <span class="pre">app</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Document</span> <span class="pre">local</span> <span class="pre">setup</span> <span class="pre">steps</span> <span class="pre">in</span> <span class="pre">README</span></code></p></li>
+</ul>
+<p>If Git requests your name or email, configure them once:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;Your Name&quot;</span>
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;you@uchicago.edu&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="push-to-github">
+<h2>8. Push to GitHub<a class="headerlink" href="#push-to-github" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-u</span></code> flag links your local <code class="docutils literal notranslate"><span class="pre">main</span></code> branch to the remote <code class="docutils literal notranslate"><span class="pre">main</span></code>. Future pushes can omit the upstream:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push
+</pre></div>
+</div>
+<p>If you see an authentication prompt, use a personal access token or SSH key—password login is no longer supported.</p>
+</section>
+<section id="verify-the-remote">
+<h2>9. Verify the Remote<a class="headerlink" href="#verify-the-remote" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Refresh your GitHub repository page.</p></li>
+<li><p>Confirm that the files render correctly and code previews look as expected.</p></li>
+<li><p>Copy the repository URL—you’ll need it when you configure Streamlit Community Cloud.</p></li>
+</ol>
+</section>
+<section id="ongoing-workflow-tips">
+<h2>10. Ongoing Workflow Tips<a class="headerlink" href="#ongoing-workflow-tips" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> early and often; aim for a “clean tree” before breaks.</p></li>
+<li><p>Use focused branches (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">feature/add-forecast-tab</span></code>) when collaborating; open pull requests for review.</p></li>
+<li><p>Keep commits small and meaningful so you can revert or cherry-pick easily.</p></li>
+<li><p>Push after each major milestone (e.g., deployment success, new visualization) so you always have a safe restore point.</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>SSH permission denied:</strong> confirm your public key is loaded with <code class="docutils literal notranslate"><span class="pre">ssh-add</span> <span class="pre">-l</span></code>; if empty, run <code class="docutils literal notranslate"><span class="pre">ssh-add</span> <span class="pre">~/.ssh/id_rsa</span></code> (or your key file).</p></li>
+<li><p><strong>HTTP authentication failed:</strong> create a personal access token at <a class="github reference external" href="https://github.com/settings/tokens">settings/tokens</a> with <code class="docutils literal notranslate"><span class="pre">repo</span></code> scope and use it in place of a password.</p></li>
+<li><p><strong>Accidentally staged a large file:</strong> run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">HEAD</span> <span class="pre">&lt;file&gt;</span></code> to unstage, remove it from disk or <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>, then stage again.</p></li>
+<li><p><strong>Merge conflicts:</strong> ask a classmate to walk through <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> output; resolve conflicts in your editor, then <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code> the fixed files and <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code>.</p></li>
+</ul>
+<p>Celebrate once your push lands—your deployment pipeline now has a reliable source of truth.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="discussion_3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Discussion 3 – Ship It &amp; Forecast</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="deploying_streamlit_app.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Deploy to Streamlit Community Cloud</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-you-begin">Before You Begin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-repository-on-github">1. Create the Repository on GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-the-repo-locally">2. Clone the Repo Locally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-your-app-skeleton">3. Stage Your App Skeleton</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-working-tree">4. Check the Working Tree</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-changes-with-diffs">5. Inspect Changes with Diffs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-intentionally">6. Stage Intentionally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commit-with-context">7. Commit with Context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#push-to-github">8. Push to GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-remote">9. Verify the Remote</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ongoing-workflow-tips">10. Ongoing Workflow Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremiah Bejarano
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Jeremiah Bejarano.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

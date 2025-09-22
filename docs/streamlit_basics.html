@@ -1,0 +1,599 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Streamlit App Progression &#8212; From Data to Dashboard</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'streamlit_basics';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Intro to the FTSFR Repository" href="intro_to_ftsfr_data.html" />
+    <link rel="prev" title="Automation with doit" href="doit_basics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="From Data to Dashboard - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="From Data to Dashboard - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    From Data to Dashboard: Building Interactive Financial Visualizations in Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshop Sessions 📈</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="discussion_1.html">Discussion 1 – Kickoff &amp; Dashboard Preview</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Workshop Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_streamlit_example.html">Quick Streamlit Inspiration (<code class="docutils literal notranslate"><span class="pre">app_01.py</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="doit_basics.html">Automation with <code class="docutils literal notranslate"><span class="pre">doit</span></code></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Streamlit App Progression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_to_ftsfr_data.html">Intro to the FTSFR Repository</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_2.html">Discussion 2 – Benchmarking &amp; Forecasting</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussion_3.html">Discussion 3 – Ship It &amp; Forecast</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="creating_new_github_repo.html">Stand Up Your Workshop Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploying_streamlit_app.html">Deploy to Streamlit Community Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series_forecasting.html">Nixtla and StatsForecast — End to End Walkthrough</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_4.html">Discussion 4 – Showcase &amp; Community</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful References 📖</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="myst_markdown_demos.html">MyST Markdown Demos 💡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syncing_files_with_git_and_github.html">Syncing Files with Git and GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_CRSP_data.html">Using CRSP Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WRDS_intro_and_web_queries.html">Introduction to WRDS</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop/issues/new?title=Issue%20on%20page%20%2Fstreamlit_basics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/streamlit_basics.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Streamlit App Progression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-streamlit-concepts">Core Streamlit Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#essential-basics">Essential Basics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-apps">Example Apps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#app-02-hello-streamlit-src-streamlit-examples-app-02-hello-py">App 02 – Hello Streamlit (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_02_hello.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#app-03-intermediate-navigation-src-streamlit-examples-app-03-py">App 03 – Intermediate Navigation (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_03.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#app-04-crsp-snapshot-src-streamlit-examples-app-04-crsp-py">App 04 – CRSP Snapshot (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_04_crsp.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-iteration">Tips for Iteration</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="streamlit-app-progression">
+<h1>Streamlit App Progression<a class="headerlink" href="#streamlit-app-progression" title="Link to this heading">#</a></h1>
+<section id="core-streamlit-concepts">
+<h2>Core Streamlit Concepts<a class="headerlink" href="#core-streamlit-concepts" title="Link to this heading">#</a></h2>
+<p>For comprehensive documentation on Streamlit fundamentals, refer to the official walkthrough:
+<strong><a class="reference external" href="https://docs.streamlit.io/get-started/fundamentals/main-concepts">https://docs.streamlit.io/get-started/fundamentals/main-concepts</a></strong></p>
+<section id="essential-basics">
+<h3>Essential Basics<a class="headerlink" href="#essential-basics" title="Link to this heading">#</a></h3>
+<p><strong>Running Apps:</strong> Execute any Python script with <code class="docutils literal notranslate"><span class="pre">streamlit</span> <span class="pre">run</span> <span class="pre">your_script.py</span></code>. The app auto-reloads when you save changes.</p>
+<p><strong>Data Flow:</strong> Streamlit reruns your entire script top-to-bottom on every interaction. This makes apps behave like normal Python scripts.</p>
+<p><strong>Display Methods:</strong></p>
+<ul class="simple">
+<li><p><strong>Magic commands</strong>: Variables on their own line auto-render</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">st.write()</span></code></strong>: Universal method for text, dataframes, charts</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">st.dataframe()</span></code></strong>: Interactive tables with sorting/filtering</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">st.line_chart()</span></code>, <code class="docutils literal notranslate"><span class="pre">st.bar_chart()</span></code></strong>: Quick built-in charts</p></li>
+</ul>
+<p><strong>Widgets as Variables:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s1">&#39;Select value&#39;</span><span class="p">)</span>  <span class="c1"># Returns current slider value</span>
+<span class="n">option</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">selectbox</span><span class="p">(</span><span class="s1">&#39;Choose&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">])</span>  <span class="c1"># Returns selected option</span>
+</pre></div>
+</div>
+<p><strong>Layout:</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">st.sidebar</span></code></strong>: Pin controls to the left panel</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">st.columns</span></code></strong>: Create side-by-side layouts</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">st.expander</span></code></strong>: Collapsible sections for space management</p></li>
+</ul>
+<p><strong>Performance:</strong> Use <code class="docutils literal notranslate"><span class="pre">&#64;st.cache_data</span></code> to prevent expensive computations from rerunning on every interaction.</p>
+<p>For deeper understanding of these concepts and advanced features, visit the official documentation linked above.</p>
+</section>
+</section>
+<section id="example-apps">
+<h2>Example Apps<a class="headerlink" href="#example-apps" title="Link to this heading">#</a></h2>
+<p>We use four small apps to highlight how quickly Streamlit scales from a single chart to a data-rich dashboard. Run them in order to see how each layer adds new concepts. By now you should have executed <code class="docutils literal notranslate"><span class="pre">doit</span> <span class="pre">pull_crsp_data</span></code>, so the <code class="docutils literal notranslate"><span class="pre">_data/crsp_streamlit_excerpt.csv</span></code> file exists for the later examples.</p>
+</section>
+<section id="environment">
+<h2>Environment<a class="headerlink" href="#environment" title="Link to this heading">#</a></h2>
+<p>Create and activate the dedicated workshop environment before installing dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>finm<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10.14
+conda<span class="w"> </span>activate<span class="w"> </span>finm
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<p>Each app can be launched with <code class="docutils literal notranslate"><span class="pre">streamlit</span> <span class="pre">run</span> <span class="pre">&lt;path-to-app.py&gt;</span></code>. Use a new terminal tab for each run so you can compare layouts side-by-side.</p>
+</section>
+<section id="app-02-hello-streamlit-src-streamlit-examples-app-02-hello-py">
+<h2>App 02 – Hello Streamlit (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_02_hello.py</span></code>)<a class="headerlink" href="#app-02-hello-streamlit-src-streamlit-examples-app-02-hello-py" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Minimal “hello world” example: text input, sliders, and a sine-wave chart generated with NumPy/Pandas.</p></li>
+<li><p>Purpose: show the Streamlit rerender loop and demonstrate how little boilerplate is needed.</p></li>
+<li><p>Try customizing: change the default greeting, swap the sine wave for a cosine wave, or add a checkbox that toggles grid-lines.</p></li>
+</ul>
+</section>
+<section id="app-03-intermediate-navigation-src-streamlit-examples-app-03-py">
+<h2>App 03 – Intermediate Navigation (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_03.py</span></code>)<a class="headerlink" href="#app-03-intermediate-navigation-src-streamlit-examples-app-03-py" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Introduces cached CSV loading (<code class="docutils literal notranslate"><span class="pre">&#64;st.cache_data</span></code>), sidebar navigation, and Plotly Express visuals.</p></li>
+<li><p>Defaults to <code class="docutils literal notranslate"><span class="pre">sample_prices.csv</span></code>, but it’s designed to load any WRDS/CRSP export—replace the file with your own data slice when you’re ready.</p></li>
+<li><p>Try customizing: add a second tab for distribution plots, expand the summary table with Sharpe/Sortino ratios, or link to the Streamlit Cloud deployment instructions.</p></li>
+</ul>
+</section>
+<section id="app-04-crsp-snapshot-src-streamlit-examples-app-04-crsp-py">
+<h2>App 04 – CRSP Snapshot (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_04_crsp.py</span></code>)<a class="headerlink" href="#app-04-crsp-snapshot-src-streamlit-examples-app-04-crsp-py" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Mirrors the tear-sheet layout but reads the excerpt created by <code class="docutils literal notranslate"><span class="pre">doit</span> <span class="pre">pull_crsp_data</span></code> (<code class="docutils literal notranslate"><span class="pre">_data/crsp_streamlit_excerpt.csv</span></code>).</p></li>
+<li><p>Ideal for demonstrating how WRDS pulls flow through the pipeline: rerun <code class="docutils literal notranslate"><span class="pre">doit</span></code> and refresh the app to see new tickers or time ranges.</p></li>
+<li><p>Try customizing: surface additional CRSP attributes (e.g., shares outstanding, market cap rankings) or add narrative callouts describing the trends you observe.</p></li>
+</ul>
+</section>
+<section id="tips-for-iteration">
+<h2>Tips for Iteration<a class="headerlink" href="#tips-for-iteration" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use the sidebar to surface configuration switches instead of scattering inputs throughout the layout.</p></li>
+<li><p>Cache aggressively (<code class="docutils literal notranslate"><span class="pre">st.cache_data</span></code>) when loading large CSV/parquet files so Streamlit isn’t re-reading data with every interaction.</p></li>
+<li><p>Keep charts and metrics backed by small helper functions—this makes it easier to port the logic into your final project.</p></li>
+<li><p>When you’re ready to deploy, ensure <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> contains every package you import and that you use relative paths (or environment variables) for data.</p></li>
+</ul>
+<p>These scaffolds are intentionally lightweight; fork them, experiment, and mix/match components as you plan your own dashboard.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="doit_basics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Automation with <code class="docutils literal notranslate"><span class="pre">doit</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="intro_to_ftsfr_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Intro to the FTSFR Repository</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-streamlit-concepts">Core Streamlit Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#essential-basics">Essential Basics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-apps">Example Apps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#app-02-hello-streamlit-src-streamlit-examples-app-02-hello-py">App 02 – Hello Streamlit (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_02_hello.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#app-03-intermediate-navigation-src-streamlit-examples-app-03-py">App 03 – Intermediate Navigation (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_03.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#app-04-crsp-snapshot-src-streamlit-examples-app-04-crsp-py">App 04 – CRSP Snapshot (<code class="docutils literal notranslate"><span class="pre">src/streamlit_examples/app_04_crsp.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-iteration">Tips for Iteration</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremiah Bejarano
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Jeremiah Bejarano.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

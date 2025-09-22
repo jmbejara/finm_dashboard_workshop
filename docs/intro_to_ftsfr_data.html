@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Intro to the FTSFR Repository &#8212; From Data to Dashboard</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro_to_ftsfr_data';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Discussion 2 – Benchmarking &amp; Forecasting" href="discussion_2.html" />
+    <link rel="prev" title="Streamlit App Progression" href="streamlit_basics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="From Data to Dashboard - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="From Data to Dashboard - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    From Data to Dashboard: Building Interactive Financial Visualizations in Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshop Sessions 📈</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="discussion_1.html">Discussion 1 – Kickoff &amp; Dashboard Preview</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Workshop Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_streamlit_example.html">Quick Streamlit Inspiration (<code class="docutils literal notranslate"><span class="pre">app_01.py</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="doit_basics.html">Automation with <code class="docutils literal notranslate"><span class="pre">doit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="streamlit_basics.html">Streamlit App Progression</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Intro to the FTSFR Repository</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_2.html">Discussion 2 – Benchmarking &amp; Forecasting</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussion_3.html">Discussion 3 – Ship It &amp; Forecast</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="creating_new_github_repo.html">Stand Up Your Workshop Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploying_streamlit_app.html">Deploy to Streamlit Community Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series_forecasting.html">Nixtla and StatsForecast — End to End Walkthrough</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_4.html">Discussion 4 – Showcase &amp; Community</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful References 📖</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="myst_markdown_demos.html">MyST Markdown Demos 💡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syncing_files_with_git_and_github.html">Syncing Files with Git and GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_CRSP_data.html">Using CRSP Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WRDS_intro_and_web_queries.html">Introduction to WRDS</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop/issues/new?title=Issue%20on%20page%20%2Fintro_to_ftsfr_data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/intro_to_ftsfr_data.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Intro to the FTSFR Repository</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-ftsfr-matters">Why FTSFR Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-set-up">Getting Set Up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-credentials">Configure Credentials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-workflows">Core Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-the-repo">Navigating the Repo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-outputs">Working with Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-prep-before-discussion-2">Recommended Prep Before Discussion 2</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="intro-to-the-ftsfr-repository">
+<h1>Intro to the FTSFR Repository<a class="headerlink" href="#intro-to-the-ftsfr-repository" title="Link to this heading">#</a></h1>
+<p>We will use the <strong>Financial Time-Series Forecasting Repository (FTSFR)</strong> as our source of standardized WRDS/Bloomberg datasets and forecasting utilities. Clone it ahead of Discussion 2 so we can explore the benchmark together.</p>
+<section id="why-ftsfr-matters">
+<h2>Why FTSFR Matters<a class="headerlink" href="#why-ftsfr-matters" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Provides reproducible pulls for multiple asset classes (equity, credit, rates, FX, real assets).</p></li>
+<li><p>Standardizes each dataset into a consistent panel format (<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">ds</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, plus optional covariates) so you can swap models without rewriting ingestion code.</p></li>
+<li><p>Includes automation scripts (<code class="docutils literal notranslate"><span class="pre">dodo_*.py</span></code>) that mirror the pipeline described in <code class="docutils literal notranslate"><span class="pre">reports/draft_ftsfr.tex</span></code>.</p></li>
+<li><p>Ships forecasting jobs and evaluation helpers that compare classical models with modern global learners.</p></li>
+</ul>
+</section>
+<section id="getting-set-up">
+<h2>Getting Set Up<a class="headerlink" href="#getting-set-up" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/jmbejara/ftsfr.git
+<span class="nb">cd</span><span class="w"> </span>ftsfr
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>ftsfr<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12
+conda<span class="w"> </span>activate<span class="w"> </span>ftsfr
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<span class="c1"># Optional forecasting extras</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements_forecasting.txt
+</pre></div>
+</div>
+<p>Optional tools:</p>
+<ul class="simple">
+<li><p>Bloomberg users: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--index-url=https://blpapi.bloomberg.com/repository/releases/python/simple/</span> <span class="pre">blpapi</span></code></p></li>
+<li><p>LaTeX build: install TeX Live (or your preferred TeX distribution) if you plan to compile the paper.</p></li>
+</ul>
+<p>Verify the environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>doit<span class="w"> </span>--version
+</pre></div>
+</div>
+</section>
+<section id="configure-credentials">
+<h2>Configure Credentials<a class="headerlink" href="#configure-credentials" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Copy <code class="docutils literal notranslate"><span class="pre">.env.example</span></code> to <code class="docutils literal notranslate"><span class="pre">.env</span></code> and populate secrets such as <code class="docutils literal notranslate"><span class="pre">WRDS_USERNAME</span></code>.</p></li>
+<li><p>Edit <code class="docutils literal notranslate"><span class="pre">subscriptions.toml</span></code> to reflect what data sources and models you can access. Example:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[cache]</span>
+<span class="n">use_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[data_sources]</span>
+<span class="n">bloomberg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">wrds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[models]</span>
+<span class="n">darts_tcn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">prophet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">use_cache</span> <span class="pre">=</span> <span class="pre">false</span></code> if you need a fresh pull; disable sources you can’t reach.</p>
+</li>
+</ol>
+</section>
+<section id="core-workflows">
+<h2>Core Workflows<a class="headerlink" href="#core-workflows" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p><strong>Pull Bloomberg data (optional)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>doit<span class="w"> </span>-f<span class="w"> </span>dodo_00_pull_bloomberg.py
+</pre></div>
+</div>
+<p>Only run this on a machine with the Bloomberg Desktop API configured and <code class="docutils literal notranslate"><span class="pre">bloomberg</span> <span class="pre">=</span> <span class="pre">true</span></code> in <code class="docutils literal notranslate"><span class="pre">subscriptions.toml</span></code>.</p>
+</li>
+<li><p><strong>Pull WRDS/Public datasets</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>doit<span class="w"> </span>-f<span class="w"> </span>dodo_01_pull.py
+</pre></div>
+</div>
+<p>Targets arrive under <code class="docutils literal notranslate"><span class="pre">_data/&lt;dataset&gt;/</span></code> as parquet + metadata.</p>
+</li>
+<li><p><strong>Run forecasting jobs</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>doit<span class="w"> </span>-f<span class="w"> </span>dodo_02_forecasting.py
+</pre></div>
+</div>
+<p>Generates prediction CSVs, error metrics, and timing logs in <code class="docutils literal notranslate"><span class="pre">_output/forecasting/</span></code>.</p>
+</li>
+<li><p><strong>Build documentation/paper (optional)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>doit<span class="w"> </span>-f<span class="w"> </span>dodo_03_paper.py
+</pre></div>
+</div>
+<p>Rebuilds the static site and compiles <code class="docutils literal notranslate"><span class="pre">reports/draft_ftsfr.tex</span></code>.</p>
+</li>
+</ol>
+</section>
+<section id="navigating-the-repo">
+<h2>Navigating the Repo<a class="headerlink" href="#navigating-the-repo" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">src/</span></code> – data modules (<code class="docutils literal notranslate"><span class="pre">pull_*</span></code> scripts), forecasting code, and utilities by asset class.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_data/</span></code> – raw/processed datasets produced by the pulls.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_output/</span></code> – forecasts, diagnostics, summary tables, timing logs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datasets.toml</span></code> – catalog of dataset names, frequencies, and dependencies.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reports/</span></code> – LaTeX draft plus figures that mirror the Sphinx docs.</p></li>
+</ul>
+</section>
+<section id="working-with-outputs">
+<h2>Working with Outputs<a class="headerlink" href="#working-with-outputs" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Error metrics: <code class="docutils literal notranslate"><span class="pre">_output/forecasting/error_metrics/&lt;dataset&gt;/&lt;model&gt;.csv</span></code></p></li>
+<li><p>Timing logs: <code class="docutils literal notranslate"><span class="pre">_output/forecasting/timing/&lt;model&gt;/&lt;dataset&gt;_timing.csv</span></code></p></li>
+<li><p>Prediction series: <code class="docutils literal notranslate"><span class="pre">_output/forecasting/predictions/&lt;dataset&gt;/&lt;model&gt;.parquet</span></code></p></li>
+<li><p>Summary dashboards (if present): <code class="docutils literal notranslate"><span class="pre">_output/forecasting/summary/</span></code></p></li>
+</ul>
+<p>After a pull, copy the relevant parquet/CSV files into this workshop repo (or point the Streamlit loaders directly at the FTSFR paths) to keep your dashboards up to date.</p>
+</section>
+<section id="recommended-prep-before-discussion-2">
+<h2>Recommended Prep Before Discussion 2<a class="headerlink" href="#recommended-prep-before-discussion-2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Clone the repo, set up the environment, and run <code class="docutils literal notranslate"><span class="pre">doit</span> <span class="pre">-f</span> <span class="pre">dodo_01_pull.py</span></code> with <code class="docutils literal notranslate"><span class="pre">wrds</span> <span class="pre">=</span> <span class="pre">true</span></code> to ensure your credentials work.</p></li>
+<li><p>Skim <code class="docutils literal notranslate"><span class="pre">reports/draft_ftsfr.tex</span></code> to familiarize yourself with the benchmark’s motivation and terminology—we’ll refer back to it during the lecture.</p></li>
+<li><p>Note any questions about the pipeline or models so we can address them during the walkthrough.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="streamlit_basics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Streamlit App Progression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="discussion_2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Discussion 2 – Benchmarking &amp; Forecasting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-ftsfr-matters">Why FTSFR Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-set-up">Getting Set Up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-credentials">Configure Credentials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-workflows">Core Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-the-repo">Navigating the Repo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-outputs">Working with Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-prep-before-discussion-2">Recommended Prep Before Discussion 2</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremiah Bejarano
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Jeremiah Bejarano.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

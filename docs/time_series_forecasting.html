@@ -1,0 +1,1426 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Nixtla and StatsForecast — End to End Walkthrough &#8212; From Data to Dashboard</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'time_series_forecasting';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Discussion 4 – Showcase &amp; Community" href="discussion_4.html" />
+    <link rel="prev" title="Deploy to Streamlit Community Cloud" href="deploying_streamlit_app.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="From Data to Dashboard - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="From Data to Dashboard - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    From Data to Dashboard: Building Interactive Financial Visualizations in Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshop Sessions 📈</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussion_1.html">Discussion 1 – Kickoff &amp; Dashboard Preview</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Workshop Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_streamlit_example.html">Quick Streamlit Inspiration (<code class="docutils literal notranslate"><span class="pre">app_01.py</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="doit_basics.html">Automation with <code class="docutils literal notranslate"><span class="pre">doit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="streamlit_basics.html">Streamlit App Progression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_to_ftsfr_data.html">Intro to the FTSFR Repository</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_2.html">Discussion 2 – Benchmarking &amp; Forecasting</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="discussion_3.html">Discussion 3 – Ship It &amp; Forecast</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="creating_new_github_repo.html">Stand Up Your Workshop Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploying_streamlit_app.html">Deploy to Streamlit Community Cloud</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Nixtla and StatsForecast — End to End Walkthrough</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_4.html">Discussion 4 – Showcase &amp; Community</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful References 📖</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="myst_markdown_demos.html">MyST Markdown Demos 💡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syncing_files_with_git_and_github.html">Syncing Files with Git and GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_CRSP_data.html">Using CRSP Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WRDS_intro_and_web_queries.html">Introduction to WRDS</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop/issues/new?title=Issue%20on%20page%20%2Ftime_series_forecasting.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/time_series_forecasting.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Nixtla and StatsForecast — End to End Walkthrough</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-libraries">Install Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-data">Read the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-data-with-the-plot-method">Explore Data with the Plot Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-multiple-models-for-many-series">Train Multiple Models for Many Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-statsforecast">Instantiate StatsForecast</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-forecasts">Generate Forecasts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-forecasts">Visualize Forecasts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-model-performance">Evaluate Model Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-the-best-model-for-every-series">Select the Best Model for Every Series</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="nixtla-and-statsforecast-end-to-end-walkthrough">
+<h1>Nixtla and StatsForecast — End to End Walkthrough<a class="headerlink" href="#nixtla-and-statsforecast-end-to-end-walkthrough" title="Link to this heading">#</a></h1>
+<p>This walkthrough comes from the Nixtla documentation on StatsForecast here: <a class="reference external" href="https://nixtlaverse.nixtla.io/statsforecast/docs/getting-started/getting_started_complete.html">https://nixtlaverse.nixtla.io/statsforecast/docs/getting-started/getting_started_complete.html</a></p>
+<p>Model training, evaluation, and selection for multiple time series using StatsForecast.</p>
+<p>Prerequisites: this guide assumes basic familiarity with StatsForecast. For a minimal example visit the Quick Start.
+Follow this article for a step-by-step guide on building a production-ready forecasting pipeline for multiple time series.
+During this guide you will gain familiarity with the core <code class="docutils literal notranslate"><span class="pre">StatsForecast</span></code> class and methods such as <code class="docutils literal notranslate"><span class="pre">StatsForecast.plot</span></code>, <code class="docutils literal notranslate"><span class="pre">StatsForecast.forecast</span></code>, and <code class="docutils literal notranslate"><span class="pre">StatsForecast.cross_validation</span></code>.
+We will use a classical benchmarking dataset from the M4 competition. The dataset includes time series from different domains like finance, economy, and sales. In this example, we use a subset of the Hourly dataset.
+We will model each time series individually. Forecasting at this level is also known as local forecasting. Therefore, you will train a series of models for every unique series and then select the best one. StatsForecast focuses on speed, simplicity, and scalability, which makes it ideal for this task.</p>
+<p>Outline:</p>
+<ul class="simple">
+<li><p>Install packages.</p></li>
+<li><p>Read the data.</p></li>
+<li><p>Explore the data.</p></li>
+<li><p>Train many models for every unique combination of time series.</p></li>
+<li><p>Evaluate the model’s performance using cross-validation.</p></li>
+<li><p>Select the best model for every unique time series.</p></li>
+</ul>
+<p>Not covered in this guide:</p>
+<ul class="simple">
+<li><p>Forecasting at scale using clusters on the cloud.</p></li>
+<li><p>Forecast the M5 Dataset in five minutes using Ray clusters.</p></li>
+<li><p>Forecast the M5 Dataset in five minutes using Spark clusters.</p></li>
+<li><p>Learn how to predict one million series in less than 30 minutes.</p></li>
+<li><p>Training models on multiple seasonalities (see the electricity load forecasting tutorial).</p></li>
+<li><p>Using external regressors or exogenous variables (follow the exogenous variables tutorial).</p></li>
+<li><p>Comparing StatsForecast with other popular libraries (benchmarks available in the documentation).</p></li>
+</ul>
+<section id="install-libraries">
+<h2>Install Libraries<a class="headerlink" href="#install-libraries" title="Link to this heading">#</a></h2>
+<p>We assume you have StatsForecast already installed. Check the official installation guide if you need to add it to your environment.</p>
+</section>
+<section id="read-the-data">
+<h2>Read the Data<a class="headerlink" href="#read-the-data" title="Link to this heading">#</a></h2>
+<p>Use pandas to read the M4 Hourly dataset stored in a parquet file for efficiency. You can use ordinary pandas operations to read your data in other formats like CSV.</p>
+<p>The input to StatsForecast is always a data frame in long format with three columns: <code class="docutils literal notranslate"><span class="pre">unique_id</span></code>, <code class="docutils literal notranslate"><span class="pre">ds</span></code>, and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">unique_id</span></code> (string, int, or category) represents an identifier for the series.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ds</span></code> (datestamp or int) should be either an integer indexing time or a timestamp (for example <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> or <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span> <span class="pre">HH:MM:SS</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> (numeric) represents the measurement we wish to forecast. Rename the target column to <code class="docutils literal notranslate"><span class="pre">y</span></code> if it differs in your source data.</p></li>
+</ul>
+<p>This dataset already satisfies the requirements. Depending on your internet connection, this step should take around 10 seconds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;https://datasets-nixtla.s3.amazonaws.com/m4-hourly.parquet&quot;</span><span class="p">)</span>
+<span class="n">Y_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>1</td>
+      <td>605.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H1</td>
+      <td>2</td>
+      <td>586.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H1</td>
+      <td>3</td>
+      <td>586.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H1</td>
+      <td>4</td>
+      <td>559.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H1</td>
+      <td>5</td>
+      <td>511.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This dataset contains 414 unique series with 900 observations on average. For this example and reproducibility’s sake, select only 10 unique IDs and keep only the last week. Depending on your processing infrastructure feel free to select more or fewer series.</p>
+<p>Processing time depends on the available computing resources. Running the complete dataset takes around 10 minutes on an AWS c5d.24xlarge (96 cores) instance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uids</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;unique_id in @uids&quot;</span><span class="p">)</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;unique_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">Y_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>580</th>
+      <td>H1</td>
+      <td>581</td>
+      <td>587.0</td>
+    </tr>
+    <tr>
+      <th>581</th>
+      <td>H1</td>
+      <td>582</td>
+      <td>537.0</td>
+    </tr>
+    <tr>
+      <th>582</th>
+      <td>H1</td>
+      <td>583</td>
+      <td>492.0</td>
+    </tr>
+    <tr>
+      <th>583</th>
+      <td>H1</td>
+      <td>584</td>
+      <td>464.0</td>
+    </tr>
+    <tr>
+      <th>584</th>
+      <td>H1</td>
+      <td>585</td>
+      <td>443.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="explore-data-with-the-plot-method">
+<h2>Explore Data with the Plot Method<a class="headerlink" href="#explore-data-with-the-plot-method" title="Link to this heading">#</a></h2>
+<p>Plot some series using the <code class="docutils literal notranslate"><span class="pre">StatsForecast.plot</span></code> method. This method prints eight random series from the dataset and is useful for basic exploratory data analysis.</p>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">StatsForecast.plot</span></code> uses Plotly as the default engine. You can change to Matplotlib by setting <code class="docutils literal notranslate"><span class="pre">engine=&quot;matplotlib&quot;</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsforecast</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatsForecast</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/homebrew/Caskroom/mambaforge/base/envs/finm/lib/python3.10/site-packages/fs/__init__.py:4: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
+  __import__(&quot;pkg_resources&quot;).declare_namespace(__name__)  # type: ignore
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">StatsForecast</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Y_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1ecfba04fcdebb1865efa0dcd6f4f1e4bf29ab7f923d53e65c113acaa2a172fe.png" src="_images/1ecfba04fcdebb1865efa0dcd6f4f1e4bf29ab7f923d53e65c113acaa2a172fe.png" />
+</div>
+</div>
+</section>
+<section id="train-multiple-models-for-many-series">
+<h2>Train Multiple Models for Many Series<a class="headerlink" href="#train-multiple-models-for-many-series" title="Link to this heading">#</a></h2>
+<p>StatsForecast can train many models on many time series efficiently. Start by importing and instantiating the desired models. StatsForecast offers a wide variety grouped into categories such as:</p>
+<ul class="simple">
+<li><p>Auto Forecast (automatic variants of ARIMA, ETS, Theta, CES).</p></li>
+<li><p>Exponential Smoothing (SES, Holt-Winters, SSO).</p></li>
+<li><p>Benchmark models (Mean, Naive, Random Walk).</p></li>
+<li><p>Intermittent or Sparse models (Croston, ADIDA, IMAPA).</p></li>
+<li><p>Multiple Seasonalities (MSTL and related models).</p></li>
+<li><p>Theta models (Theta, DynamicTheta, etc.).</p></li>
+</ul>
+<p>For this example we will use:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HoltWinters</span></code>: triple exponential smoothing for series with trend and seasonality.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CrostonClassic</span></code>: suited for intermittent series.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SeasonalNaive</span></code>: memory-efficient seasonal naive predictions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HistoricAverage</span></code>: arithmetic mean baseline.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DynamicOptimizedTheta</span></code>: a performant theta-family model.</p></li>
+</ul>
+<p>Setting the <code class="docutils literal notranslate"><span class="pre">season_length</span></code> argument is sometimes tricky—Rob Hyndman’s article on seasonal periods is a helpful reference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsforecast.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">HoltWinters</span><span class="p">,</span>
+    <span class="n">CrostonClassic</span> <span class="k">as</span> <span class="n">Croston</span><span class="p">,</span>
+    <span class="n">HistoricAverage</span><span class="p">,</span>
+    <span class="n">DynamicOptimizedTheta</span> <span class="k">as</span> <span class="n">DOT</span><span class="p">,</span>
+    <span class="n">SeasonalNaive</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">HoltWinters</span><span class="p">(),</span>
+    <span class="n">Croston</span><span class="p">(),</span>
+    <span class="n">SeasonalNaive</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">24</span><span class="p">),</span>
+    <span class="n">HistoricAverage</span><span class="p">(),</span>
+    <span class="n">DOT</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">24</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">models</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[HoltWinters,
+ CrostonClassic,
+ SeasonalNaive,
+ HistoricAverage,
+ DynamicOptimizedTheta]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="instantiate-statsforecast">
+<h3>Instantiate StatsForecast<a class="headerlink" href="#instantiate-statsforecast" title="Link to this heading">#</a></h3>
+<p>Fit the models by creating a <code class="docutils literal notranslate"><span class="pre">StatsForecast</span></code> object with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">models</span></code>: list of instantiated models.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freq</span></code>: frequency of the data (see pandas frequency strings or integers).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>: number of jobs used for parallel processing (<code class="docutils literal notranslate"><span class="pre">-1</span></code> for all cores).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fallback_model</span></code>: a model to use if another model fails during fitting.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">StatsForecast</span></code> achieves its speed via Numba JIT compilation. The first fit may take a few seconds; subsequent runs will be faster once the functions are compiled.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span> <span class="o">=</span> <span class="n">StatsForecast</span><span class="p">(</span>
+    <span class="n">models</span><span class="o">=</span><span class="n">models</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fallback_model</span><span class="o">=</span><span class="n">SeasonalNaive</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># single-core execution keeps the walkthrough compatible with ipynb conversion</span>
+<span class="p">)</span>
+<span class="n">sf</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>StatsForecast(models=[HoltWinters,CrostonClassic,SeasonalNaive,HistoricAverage,DynamicOptimizedTheta])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="generate-forecasts">
+<h3>Generate Forecasts<a class="headerlink" href="#generate-forecasts" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">forecast</span></code> method accepts:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: forecast horizon (number of steps ahead).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: list of confidence levels for prediction intervals.</p></li>
+</ul>
+<p>The result is a data frame with point forecasts, lower/upper bounds, and one column per model. Depending on your machine this step should take about a minute (remove auto models for faster demos).</p>
+<p><code class="docutils literal notranslate"><span class="pre">StatsForecast.forecast</span></code> is compatible with distributed clusters and does not store model parameters. For parameter persistence use <code class="docutils literal notranslate"><span class="pre">fit</span></code> + <code class="docutils literal notranslate"><span class="pre">predict</span></code>, keeping in mind that some distributed engines may not support those methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">forecasts_df</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">])</span>
+<span class="n">forecasts_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>HoltWinters</th>
+      <th>HoltWinters-lo-90</th>
+      <th>HoltWinters-hi-90</th>
+      <th>CrostonClassic</th>
+      <th>CrostonClassic-lo-90</th>
+      <th>CrostonClassic-hi-90</th>
+      <th>SeasonalNaive</th>
+      <th>SeasonalNaive-lo-90</th>
+      <th>SeasonalNaive-hi-90</th>
+      <th>HistoricAverage</th>
+      <th>HistoricAverage-lo-90</th>
+      <th>HistoricAverage-hi-90</th>
+      <th>DynamicOptimizedTheta</th>
+      <th>DynamicOptimizedTheta-lo-90</th>
+      <th>DynamicOptimizedTheta-hi-90</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>749</td>
+      <td>829.0</td>
+      <td>422.549268</td>
+      <td>1235.450732</td>
+      <td>829.0</td>
+      <td>422.549268</td>
+      <td>1235.450732</td>
+      <td>635.0</td>
+      <td>566.036734</td>
+      <td>703.963266</td>
+      <td>660.982143</td>
+      <td>398.037761</td>
+      <td>923.926524</td>
+      <td>592.701851</td>
+      <td>577.677300</td>
+      <td>611.652642</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H1</td>
+      <td>750</td>
+      <td>807.0</td>
+      <td>400.549268</td>
+      <td>1213.450732</td>
+      <td>807.0</td>
+      <td>400.549268</td>
+      <td>1213.450732</td>
+      <td>572.0</td>
+      <td>503.036734</td>
+      <td>640.963266</td>
+      <td>660.982143</td>
+      <td>398.037761</td>
+      <td>923.926524</td>
+      <td>525.589117</td>
+      <td>505.449706</td>
+      <td>546.621821</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H1</td>
+      <td>751</td>
+      <td>785.0</td>
+      <td>378.549268</td>
+      <td>1191.450732</td>
+      <td>785.0</td>
+      <td>378.549268</td>
+      <td>1191.450732</td>
+      <td>532.0</td>
+      <td>463.036734</td>
+      <td>600.963266</td>
+      <td>660.982143</td>
+      <td>398.037761</td>
+      <td>923.926524</td>
+      <td>489.251814</td>
+      <td>462.072830</td>
+      <td>512.424107</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H1</td>
+      <td>752</td>
+      <td>756.0</td>
+      <td>349.549268</td>
+      <td>1162.450732</td>
+      <td>756.0</td>
+      <td>349.549268</td>
+      <td>1162.450732</td>
+      <td>493.0</td>
+      <td>424.036734</td>
+      <td>561.963266</td>
+      <td>660.982143</td>
+      <td>398.037761</td>
+      <td>923.926524</td>
+      <td>456.195032</td>
+      <td>430.554311</td>
+      <td>478.260966</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H1</td>
+      <td>753</td>
+      <td>719.0</td>
+      <td>312.549268</td>
+      <td>1125.450732</td>
+      <td>719.0</td>
+      <td>312.549268</td>
+      <td>1125.450732</td>
+      <td>477.0</td>
+      <td>408.036734</td>
+      <td>545.963266</td>
+      <td>660.982143</td>
+      <td>398.037761</td>
+      <td>923.926524</td>
+      <td>436.290514</td>
+      <td>411.051209</td>
+      <td>461.815996</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="visualize-forecasts">
+<h2>Visualize Forecasts<a class="headerlink" href="#visualize-forecasts" title="Link to this heading">#</a></h2>
+<p>Plot the results of eight random series using <code class="docutils literal notranslate"><span class="pre">StatsForecast.plot</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">forecasts_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8aade18dc025770854232e6f4b64272a15b8941b0a3b9e3b402a9970390dea11.png" src="_images/8aade18dc025770854232e6f4b64272a15b8941b0a3b9e3b402a9970390dea11.png" />
+</div>
+</div>
+<p>The plotting helper allows further customization. For example, restrict to selected models or specific <code class="docutils literal notranslate"><span class="pre">unique_id</span></code> values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">Y_df</span><span class="p">,</span>
+    <span class="n">forecasts_df</span><span class="p">,</span>
+    <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HoltWinters&quot;</span><span class="p">,</span> <span class="s2">&quot;DynamicOptimizedTheta&quot;</span><span class="p">],</span>
+    <span class="n">unique_ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;H10&quot;</span><span class="p">,</span> <span class="s2">&quot;H105&quot;</span><span class="p">],</span>
+    <span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/aab8e6f0ae8dd83655debe8524b07b783e81cd53eebae1fa86f5bbfaa36f0557.png" src="_images/aab8e6f0ae8dd83655debe8524b07b783e81cd53eebae1fa86f5bbfaa36f0557.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Explore other models</span>
+<span class="n">sf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">forecasts_df</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;SeasonalNaive&quot;</span><span class="p">],</span> <span class="n">unique_ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;H10&quot;</span><span class="p">,</span> <span class="s2">&quot;H105&quot;</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/fe876fa9d2607c655bd9faf5eeac048566b86006fe84479f48efd3d1324a195f.png" src="_images/fe876fa9d2607c655bd9faf5eeac048566b86006fe84479f48efd3d1324a195f.png" />
+</div>
+</div>
+</section>
+<section id="evaluate-model-performance">
+<h2>Evaluate Model Performance<a class="headerlink" href="#evaluate-model-performance" title="Link to this heading">#</a></h2>
+<p>To assess accuracy and robustness, perform time-series cross-validation. Define a sliding window across the historical data and predict the period following it. This mirrors how the model would have performed in the past while keeping training data contiguous.</p>
+<p>With time series data, cross validation is done by defining a sliding window across the historical data and predicting the period following it. This form of cross-validation allows us to arrive at a better estimation of our model’s predictive abilities across a wider range of temporal instances while also keeping the data in the training set contiguous as is required by our models.</p>
+<p><img alt="Chained Windows" src="https://raw.githubusercontent.com/Nixtla/statsforecast/main/nbs/imgs/ChainedWindows.gif" /></p>
+<p>In this case we evaluate the last two days (<code class="docutils literal notranslate"><span class="pre">n_windows=2</span></code>) forecasting every second day (<code class="docutils literal notranslate"><span class="pre">step_size=24</span></code>). Setting <code class="docutils literal notranslate"><span class="pre">n_windows=1</span></code> mirrors a traditional train/test split.</p>
+<p><code class="docutils literal notranslate"><span class="pre">StatsForecast.cross_validation</span></code> arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">df</span></code>: training data frame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: forecast horizon.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">step_size</span></code>: window shift.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_windows</span></code>: number of windows to evaluate.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_df</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">Y_df</span><span class="p">,</span>
+    <span class="n">h</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">step_size</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_windows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cv_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>cutoff</th>
+      <th>y</th>
+      <th>HoltWinters</th>
+      <th>CrostonClassic</th>
+      <th>SeasonalNaive</th>
+      <th>HistoricAverage</th>
+      <th>DynamicOptimizedTheta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>701</td>
+      <td>700</td>
+      <td>619.0</td>
+      <td>847.0</td>
+      <td>742.668748</td>
+      <td>691.0</td>
+      <td>661.675</td>
+      <td>612.767525</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H1</td>
+      <td>702</td>
+      <td>700</td>
+      <td>565.0</td>
+      <td>820.0</td>
+      <td>742.668748</td>
+      <td>618.0</td>
+      <td>661.675</td>
+      <td>536.846296</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H1</td>
+      <td>703</td>
+      <td>700</td>
+      <td>532.0</td>
+      <td>790.0</td>
+      <td>742.668748</td>
+      <td>563.0</td>
+      <td>661.675</td>
+      <td>497.824302</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H1</td>
+      <td>704</td>
+      <td>700</td>
+      <td>495.0</td>
+      <td>784.0</td>
+      <td>742.668748</td>
+      <td>529.0</td>
+      <td>661.675</td>
+      <td>464.723235</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H1</td>
+      <td>705</td>
+      <td>700</td>
+      <td>481.0</td>
+      <td>752.0</td>
+      <td>742.668748</td>
+      <td>504.0</td>
+      <td>661.675</td>
+      <td>440.972351</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The cross-validation data frame includes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">unique_id</span></code>: series identifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ds</span></code>: timestamp or temporal index.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cutoff</span></code>: last timestamp used for each window.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: actual value.</p></li>
+<li><p>One column per model containing fitted values.</p></li>
+</ul>
+<p>Next, evaluate performance using error metrics such as Mean Absolute Error (MAE) or Mean Squared Error (MSE). The helper below computes an evaluation table and highlights the best model per series.</p>
+<p>Note: MAPE can be misleading for granular data, so MSE or MAE are often preferred.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utilsforecast.losses</span><span class="w"> </span><span class="kn">import</span> <span class="n">mse</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_cv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metric</span><span class="p">):</span>
+    <span class="n">models_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;unique_id&quot;</span><span class="p">,</span> <span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;cutoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">evals</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="n">models_cols</span><span class="p">)</span>
+    <span class="n">evals</span><span class="p">[</span><span class="s2">&quot;best_model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">evals</span><span class="p">[</span><span class="n">models_cols</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">evals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluation_df</span> <span class="o">=</span> <span class="n">evaluate_cv</span><span class="p">(</span><span class="n">cv_df</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span>
+<span class="n">evaluation_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>HoltWinters</th>
+      <th>CrostonClassic</th>
+      <th>SeasonalNaive</th>
+      <th>HistoricAverage</th>
+      <th>DynamicOptimizedTheta</th>
+      <th>best_model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>44888.020833</td>
+      <td>28038.733985</td>
+      <td>1422.666667</td>
+      <td>20927.664488</td>
+      <td>1296.333117</td>
+      <td>DynamicOptimizedTheta</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H10</td>
+      <td>2812.916667</td>
+      <td>1483.483839</td>
+      <td>96.895833</td>
+      <td>1980.367543</td>
+      <td>379.631699</td>
+      <td>SeasonalNaive</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H100</td>
+      <td>121625.375000</td>
+      <td>91945.139237</td>
+      <td>12019.000000</td>
+      <td>78491.191439</td>
+      <td>21699.646799</td>
+      <td>SeasonalNaive</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H101</td>
+      <td>28453.395833</td>
+      <td>16183.634340</td>
+      <td>10944.458333</td>
+      <td>18208.409800</td>
+      <td>63698.059884</td>
+      <td>SeasonalNaive</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H102</td>
+      <td>232924.854167</td>
+      <td>132655.309136</td>
+      <td>12699.895833</td>
+      <td>309110.475212</td>
+      <td>31393.070741</td>
+      <td>SeasonalNaive</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Create a summary table counting how many series each model wins.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluation_df</span><span class="p">[</span><span class="s2">&quot;best_model&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>best_model</th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>SeasonalNaive</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DynamicOptimizedTheta</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You can also inspect unique IDs where a specific model performs best and visualize those forecasts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seasonal_ids</span> <span class="o">=</span> <span class="n">evaluation_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;best_model == &quot;SeasonalNaive&quot;&#39;</span><span class="p">)[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">]</span>
+<span class="n">sf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">forecasts_df</span><span class="p">,</span> <span class="n">unique_ids</span><span class="o">=</span><span class="n">seasonal_ids</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;SeasonalNaive&quot;</span><span class="p">,</span> <span class="s2">&quot;DynamicOptimizedTheta&quot;</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6ceef608a3c00b03983f1e7f0c21e05d7fe5ed055f4419c232d8b590e9912c05.png" src="_images/6ceef608a3c00b03983f1e7f0c21e05d7fe5ed055f4419c232d8b590e9912c05.png" />
+</div>
+</div>
+</section>
+<section id="select-the-best-model-for-every-series">
+<h2>Select the Best Model for Every Series<a class="headerlink" href="#select-the-best-model-for-every-series" title="Link to this heading">#</a></h2>
+<p>Define a utility function that merges the cross-validation results with the forecast data frame and extracts the best-performing forecast (including intervals) per <code class="docutils literal notranslate"><span class="pre">unique_id</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_best_model_forecast</span><span class="p">(</span><span class="n">forecasts_df</span><span class="p">,</span> <span class="n">evaluation_df</span><span class="p">):</span>
+    <span class="n">with_best</span> <span class="o">=</span> <span class="n">forecasts_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">evaluation_df</span><span class="p">[[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">,</span> <span class="s2">&quot;best_model&quot;</span><span class="p">]])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">with_best</span><span class="p">[[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">,</span> <span class="s2">&quot;ds&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;-lo-90&quot;</span><span class="p">,</span> <span class="s2">&quot;-hi-90&quot;</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;best_model</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">with_best</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;best_model&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prod_forecasts_df</span> <span class="o">=</span> <span class="n">get_best_model_forecast</span><span class="p">(</span><span class="n">forecasts_df</span><span class="p">,</span> <span class="n">evaluation_df</span><span class="p">)</span>
+<span class="n">prod_forecasts_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>best_model</th>
+      <th>best_model-lo-90</th>
+      <th>best_model-hi-90</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>749</td>
+      <td>592.701851</td>
+      <td>577.677300</td>
+      <td>611.652642</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H1</td>
+      <td>750</td>
+      <td>525.589117</td>
+      <td>505.449706</td>
+      <td>546.621821</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H1</td>
+      <td>751</td>
+      <td>489.251814</td>
+      <td>462.072830</td>
+      <td>512.424107</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H1</td>
+      <td>752</td>
+      <td>456.195032</td>
+      <td>430.554311</td>
+      <td>478.260966</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H1</td>
+      <td>753</td>
+      <td>436.290514</td>
+      <td>411.051209</td>
+      <td>461.815996</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Plot the production-ready forecast table to confirm the selected models behave as expected.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">prod_forecasts_df</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/612df3c3c80dc50210ff7bd7d108dbfedf87e166ccc4e30920b7d46f72bbcc73.png" src="_images/612df3c3c80dc50210ff7bd7d108dbfedf87e166ccc4e30920b7d46f72bbcc73.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="deploying_streamlit_app.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deploy to Streamlit Community Cloud</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="discussion_4.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Discussion 4 – Showcase &amp; Community</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-libraries">Install Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-data">Read the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-data-with-the-plot-method">Explore Data with the Plot Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-multiple-models-for-many-series">Train Multiple Models for Many Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-statsforecast">Instantiate StatsForecast</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-forecasts">Generate Forecasts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-forecasts">Visualize Forecasts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-model-performance">Evaluate Model Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-the-best-model-for-every-series">Select the Best Model for Every Series</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremiah Bejarano
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Jeremiah Bejarano.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

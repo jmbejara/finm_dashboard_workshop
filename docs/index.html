@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>From Data to Dashboard: Building Interactive Financial Visualizations in Python &#8212; From Data to Dashboard</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Discussion 1 – Kickoff &amp; Dashboard Preview" href="discussion_1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="From Data to Dashboard - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="From Data to Dashboard - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    From Data to Dashboard: Building Interactive Financial Visualizations in Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshop Sessions 📈</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussion_1.html">Discussion 1 – Kickoff &amp; Dashboard Preview</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Workshop Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_streamlit_example.html">Quick Streamlit Inspiration (<code class="docutils literal notranslate"><span class="pre">app_01.py</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="doit_basics.html">Automation with <code class="docutils literal notranslate"><span class="pre">doit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="streamlit_basics.html">Streamlit App Progression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_to_ftsfr_data.html">Intro to the FTSFR Repository</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_2.html">Discussion 2 – Benchmarking &amp; Forecasting</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussion_3.html">Discussion 3 – Ship It &amp; Forecast</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="creating_new_github_repo.html">Stand Up Your Workshop Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploying_streamlit_app.html">Deploy to Streamlit Community Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series_forecasting.html">Nixtla and StatsForecast — End to End Walkthrough</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="discussion_4.html">Discussion 4 – Showcase &amp; Community</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful References 📖</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="myst_markdown_demos.html">MyST Markdown Demos 💡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syncing_files_with_git_and_github.html">Syncing Files with Git and GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_CRSP_data.html">Using CRSP Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WRDS_intro_and_web_queries.html">Introduction to WRDS</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jbejarano/finm_dashboard_workshop/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>From Data to Dashboard: Building Interactive Financial Visualizations in Python</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-overview">Workshop Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#required-software">Required Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-youll-learn">What You’ll Learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-schedule">Detailed Schedule</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#monday-september-22">Monday, September 22</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuesday-september-23">Tuesday, September 23</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-focus">Project Focus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparation-checklist">Preparation Checklist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helpful-references">Helpful References</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stay-in-touch">Stay in Touch</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="from-data-to-dashboard-building-interactive-financial-visualizations-in-python">
+<h1>From Data to Dashboard: Building Interactive Financial Visualizations in Python<a class="headerlink" href="#from-data-to-dashboard-building-interactive-financial-visualizations-in-python" title="Link to this heading">#</a></h1>
+<p>Turn your financial analyses into interactive web dashboards that look as polished as the insights they communicate. This two-day workshop gives students with foundational Python experience the structure, support, and hands-on time they need to source data, prototype compelling visuals, and publish a shareable dashboard.</p>
+<section id="workshop-overview">
+<h2>Workshop Overview<a class="headerlink" href="#workshop-overview" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Instructor:</strong> Jeremy Bejarano</p></li>
+<li><p><strong>Email:</strong> <a class="reference external" href="mailto:jbejarano&#37;&#52;&#48;uchicago&#46;edu">jbejarano<span>&#64;</span>uchicago<span>&#46;</span>edu</a></p></li>
+<li><p><strong>Audience:</strong> Students comfortable with basic Python who want to level up their data storytelling and presentation skills.</p></li>
+<li><p><strong>Tools:</strong> Python, WRDS for data access, Streamlit for interactive dashboards, plus supporting open-source visualization libraries.</p></li>
+<li><p><strong>Format:</strong> Each day alternates focused lectures with guided breakout sessions so you can immediately apply what you learn. Expect plenty of time for questions and in-the-room troubleshooting.</p></li>
+</ul>
+</section>
+<section id="required-software">
+<h2>Required Software<a class="headerlink" href="#required-software" title="Link to this heading">#</a></h2>
+<p>Make sure the following tools are installed and ready before Day 1:</p>
+<ul>
+<li><p><strong>Python 3.12 (conda environment recommended)</strong> – Install the <a class="reference external" href="https://www.anaconda.com/products/distribution">Anaconda distribution</a>, then create an isolated environment for the workshop:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>finm<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10.14
+conda<span class="w"> </span>activate<span class="w"> </span>finm
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<p>After activating the environment, verify <code class="docutils literal notranslate"><span class="pre">streamlit</span> <span class="pre">hello</span></code> runs.</p>
+</li>
+<li><p><strong>VS Code (or another editor)</strong> – Grab <a class="reference external" href="https://code.visualstudio.com/">VS Code</a> plus the Python and Jupyter extensions, or bring your preferred IDE.</p></li>
+<li><p><strong>Git + GitHub account</strong> – Install <a class="reference external" href="https://git-scm.com/downloads">Git</a> and set up a GitHub account if you don’t already have one.</p></li>
+<li><p><strong>WRDS credentials</strong> – Request an account and test your connection ahead of time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">wrds</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">wrds</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">wrds_username</span><span class="o">=</span><span class="s2">&quot;your_username&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>WRDS may prompt you to create a <code class="docutils literal notranslate"><span class="pre">.pgpass</span></code> file; select <code class="docutils literal notranslate"><span class="pre">Y</span></code> if asked.</p>
+</li>
+</ul>
+</section>
+<section id="what-youll-learn">
+<h2>What You’ll Learn<a class="headerlink" href="#what-youll-learn" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Pulling and wrangling financial datasets from the Wharton Research Data Services (WRDS) platform.</p></li>
+<li><p>Designing visual narratives that highlight the story behind your analysis.</p></li>
+<li><p>Building interactive dashboards in Streamlit that you can run locally or publish to the web.</p></li>
+<li><p>Packaging your work so that stakeholders can navigate, explore, and trust your results.</p></li>
+</ul>
+</section>
+<section id="detailed-schedule">
+<h2>Detailed Schedule<a class="headerlink" href="#detailed-schedule" title="Link to this heading">#</a></h2>
+<section id="monday-september-22">
+<h3>Monday, September 22<a class="headerlink" href="#monday-september-22" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Discussion 1 - 12 - 1:30 pm : Kickoff, Streamlit tour, tooling setup</p></li>
+<li><p>Breakout Session - 1:30 - 2:30 pm</p></li>
+<li><p>Discussion 2 – 2:30 - 4:00 pm: Benchmark slides and forecasting repository overview</p></li>
+</ul>
+</section>
+<section id="tuesday-september-23">
+<h3>Tuesday, September 23<a class="headerlink" href="#tuesday-september-23" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Discussion 3 – 12:00 - 1:30 pm: Forecast integration and dashboard polish</p></li>
+<li><p>Breakout Session - 1:30 - 2:30 pm</p></li>
+<li><p>Discussion 4 – 2:30 - 4:00 pm: Final presentations and retrospectives</p></li>
+</ul>
+</section>
+</section>
+<section id="project-focus">
+<h2>Project Focus<a class="headerlink" href="#project-focus" title="Link to this heading">#</a></h2>
+<p>Across both days you will scope, build, and present a custom financial dashboard:</p>
+<ol class="arabic simple">
+<li><p>Identify a question or analysis that matters to you or your team. You might choose to explore a specific asset class or other dataset available in <a class="reference external" href="https://github.com/jmbejara/ftsfr">ftsfr</a>.</p></li>
+<li><p>Use WRDS to collect, clean, and validate the underlying data.</p></li>
+<li><p>Prototype visualizations that surface the key findings.</p></li>
+<li><p>Assemble the final interactive dashboard in Streamlit and publish it locally, with optional guidance for hosting on the web.</p></li>
+</ol>
+<p>Expect plenty of instructor feedback during the breakout blocks, plus practical tips on layout, performance, and narrative flow. There will also be room to explore advanced touches—like scenario toggles or comparison views—for teams who move quickly.</p>
+</section>
+<section id="preparation-checklist">
+<h2>Preparation Checklist<a class="headerlink" href="#preparation-checklist" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Confirm the required software and WRDS credentials are working.</p></li>
+<li><p>Bring a laptop, charger, and any prior analysis you might want to showcase.</p></li>
+<li><p>Consider a data question you are excited to explore; we will workshop ideas during the opening breakout.</p></li>
+</ul>
+</section>
+<section id="helpful-references">
+<h2>Helpful References<a class="headerlink" href="#helpful-references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="myst_markdown_demos.html"><span class="std std-doc">MyST Markdown Demo</span></a> — quick primer on formatting notebook-friendly notes for the workshop.</p></li>
+<li><p><a class="reference internal" href="syncing_files_with_git_and_github.html"><span class="std std-doc">Syncing Files with Git and GitHub</span></a> — keep your project version-controlled as you iterate.</p></li>
+<li><p><a class="reference internal" href="using_CRSP_data.html"><span class="std std-doc">Using CRSP Data</span></a> — background on a high-value WRDS dataset you might draw from.</p></li>
+<li><p><a class="reference internal" href="WRDS_intro_and_web_queries.html"><span class="std std-doc">WRDS Intro and Web Queries</span></a> — step-by-step guide to pulling data for your dashboard.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="stay-in-touch">
+<h2>Stay in Touch<a class="headerlink" href="#stay-in-touch" title="Link to this heading">#</a></h2>
+<p>Questions, suggestions, or tweaks to the plan? Reach out anytime—Jeremy is refining the flow based on your feedback and is looking forward to building with you.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="discussion_1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Discussion 1 – Kickoff &amp; Dashboard Preview</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-overview">Workshop Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#required-software">Required Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-youll-learn">What You’ll Learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-schedule">Detailed Schedule</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#monday-september-22">Monday, September 22</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuesday-september-23">Tuesday, September 23</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-focus">Project Focus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparation-checklist">Preparation Checklist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helpful-references">Helpful References</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stay-in-touch">Stay in Touch</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremiah Bejarano
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Jeremiah Bejarano.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
