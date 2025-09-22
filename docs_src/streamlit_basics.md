@@ -1,5 +1,39 @@
 # Streamlit App Progression
 
+## Core Streamlit Concepts
+
+For comprehensive documentation on Streamlit fundamentals, refer to the official walkthrough:
+**https://docs.streamlit.io/get-started/fundamentals/main-concepts**
+
+### Essential Basics
+
+**Running Apps:** Execute any Python script with `streamlit run your_script.py`. The app auto-reloads when you save changes.
+
+**Data Flow:** Streamlit reruns your entire script top-to-bottom on every interaction. This makes apps behave like normal Python scripts.
+
+**Display Methods:**
+- **Magic commands**: Variables on their own line auto-render
+- **`st.write()`**: Universal method for text, dataframes, charts
+- **`st.dataframe()`**: Interactive tables with sorting/filtering
+- **`st.line_chart()`, `st.bar_chart()`**: Quick built-in charts
+
+**Widgets as Variables:**
+```python
+x = st.slider('Select value')  # Returns current slider value
+option = st.selectbox('Choose', ['A', 'B', 'C'])  # Returns selected option
+```
+
+**Layout:**
+- **`st.sidebar`**: Pin controls to the left panel
+- **`st.columns`**: Create side-by-side layouts
+- **`st.expander`**: Collapsible sections for space management
+
+**Performance:** Use `@st.cache_data` to prevent expensive computations from rerunning on every interaction.
+
+For deeper understanding of these concepts and advanced features, visit the official documentation linked above.
+
+## Example Apps
+
 We use four small apps to highlight how quickly Streamlit scales from a single chart to a data-rich dashboard. Run them in order to see how each layer adds new concepts. By now you should have executed `doit pull_crsp_data`, so the `_data/crsp_streamlit_excerpt.csv` file exists for the later examples.
 
 ## Environment

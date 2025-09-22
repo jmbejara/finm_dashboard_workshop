@@ -1,6 +1,6 @@
 # Automation with `doit`
 
-This repository uses [`doit`](https://pydoit.org/) to glue together data pulls, documentation builds, and other repeatable tasks. Think of it as a light-weight, Python-friendly alternative to a Makefile. Run this before customizing the Streamlit apps so the CRSP excerpt exists.
+This repository uses [`doit`](https://pydoit.org/) to manage data pulls, documentation builds, and other repeatable tasks. Think of it as a Python-friendly build system that handles dependencies automatically.
 
 ## Installation
 ```bash
@@ -8,43 +8,68 @@ pip install -r requirements.txt
 ```
 This installs `doit` alongside the other packages used in the workshop.
 
-## Inspecting Available Tasks
+## Primary Usage: Run Everything
 ```bash
-doit list
+doit
 ```
-Key tasks:
-- `pull_crsp_data` – runs `src/build_crsp_data.py`, which attempts a WRDS pull and falls back to synthetic CRSP-style data when necessary.
-- `show_crsp_excerpt_info` – prints a quick summary after the pull completes.
-- `build_docs` – builds the Sphinx site into `_docs/build/html/`.
-- `publish_docs` – copies the HTML into `docs/` (suitable for GitHub Pages).
+This single command runs all tasks in the proper order based on their dependencies and targets. `doit` automatically:
+- Determines which tasks need to run based on file timestamps and dependencies
+- Executes tasks in the correct order
+- Skips tasks whose targets are already up-to-date
+- Handles the entire pipeline: data pulls → processing → documentation build
 
-`doit` runs the default task list defined in `dodo.py`. At the moment the defaults are `pull_crsp_data` and `publish_docs`, so a bare `doit` handles both the data pipeline and the documentation build.
-
-## Pulling CRSP Data
+### Parallel Execution
+Speed up the build with parallel task execution:
 ```bash
-doit pull_crsp_data
+doit -n 4  # Run up to 4 tasks in parallel
 ```
-What happens:
-1. `src/pull_CRSP_Compustat.py` runs first (via `dodo.py`) and writes the WRDS pulls into `_data/`.
-2. `src/build_crsp_data.py` loads those parquet files and produces a tidy excerpt.
-3. The excerpt artifacts land at:
-   - `_data/crsp_streamlit_excerpt.csv`
-   - `_data/crsp_streamlit_excerpt.parquet`
-   - `_data/crsp_data_metadata.json`
-4. `app_04_crsp.py` reads the CSV excerpt, so relaunch the app after rerunning `doit` to see fresh data.
+This is especially useful when you have multiple independent data processing or documentation tasks.
 
-## Building and Publishing the Docs
+## What Gets Built
+Running `doit` executes the default tasks defined in `dodo.py`:
+1. **Data Pipeline**: Pulls CRSP data from WRDS (or generates synthetic data as fallback), then creates excerpts
+2. **Documentation**: Builds and publishes the Sphinx documentation
+
+Output artifacts:
+- `_data/crsp_streamlit_excerpt.csv` – Data for Streamlit apps
+- `_data/crsp_streamlit_excerpt.parquet` – Efficient data format
+- `_data/crsp_data_metadata.json` – Data pipeline metadata
+- `docs/` – Published documentation site
+
+## Rebuilding from Scratch
 ```bash
-doit publish_docs
+doit clean  # Remove all generated files
+doit        # Rebuild everything
 ```
-Steps performed:
-1. Sphinx builds the site to `_docs/build/html/`.
-2. The HTML output is mirrored into the top-level `docs/` directory (old files are removed first, `.gitignore` is preserved).
-3. GitHub Pages or any static host can serve from `docs/` without additional tweaks.
 
-## Helpful Patterns
-- `doit -n 1 <task>` runs just that task and prints live output.
-- `doit clean` removes generated targets. Follow up with `doit` to rebuild from scratch.
-- `doit forget pull_crsp_data` forces the CRSP pull to run again even if the targets already exist.
+## Advanced Usage: Individual Tasks
 
-By keeping these workflows in `dodo.py`, you have a single entry point for both data refreshes and documentation builds—ideal when you’re iterating quickly during the workshop.
+While `doit` handles everything automatically, you can inspect or run individual tasks when needed:
+
+```bash
+doit list  # Show all available tasks
+```
+
+Key tasks include:
+- `pull_crsp_data` – WRDS data pull and processing
+- `show_crsp_excerpt_info` – Display data summary
+- `build_docs` – Generate Sphinx documentation
+- `publish_docs` – Copy docs for GitHub Pages
+
+Run a specific task:
+```bash
+doit pull_crsp_data  # Run just the CRSP data pipeline
+```
+
+Force a task to rerun:
+```bash
+doit forget pull_crsp_data  # Clear task status
+doit pull_crsp_data         # Run again
+```
+
+## Tips
+- After running `doit`, restart your Streamlit apps to see fresh data
+- Use `doit -n 1` for verbose output during debugging
+- The `dodo.py` file defines all task dependencies and build rules
+
+By using `doit` as your primary command, you ensure all components stay synchronized—ideal for rapid iteration during the workshop.
