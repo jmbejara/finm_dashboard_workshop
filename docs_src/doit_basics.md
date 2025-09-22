@@ -4,9 +4,9 @@ This repository uses [`doit`](https://pydoit.org/) to glue together data pulls, 
 
 ## Installation
 ```bash
-pip install doit
+pip install -r requirements.txt
 ```
-(Already included in `src/streamlit_examples/requirements.txt`, so a single `pip install -r ...` covers it.)
+This installs `doit` alongside the other packages used in the workshop.
 
 ## Inspecting Available Tasks
 ```bash

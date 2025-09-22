@@ -4,7 +4,7 @@ We use four small apps to highlight how quickly Streamlit scales from a single c
 
 ## Environment
 ```bash
-pip install -r src/streamlit_examples/requirements.txt
+pip install -r requirements.txt
 ```
 Each app can be launched with `streamlit run <path-to-app.py>`. Use a new terminal tab for each run so you can compare layouts side-by-side.
 
