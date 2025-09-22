@@ -10,7 +10,8 @@ The app highlights:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, List
+from pathlib import Path
+from typing import Iterable, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -18,6 +19,7 @@ import plotly.graph_objects as go
 import streamlit as st
 import yfinance as yf
 from pandas.tseries.offsets import BDay
+from pandas_datareader import data as pdr_data
 
 st.set_page_config(
     page_title="Financial Dashboard Tear Sheet",
@@ -28,6 +30,7 @@ st.set_page_config(
 DEFAULT_TICKERS = ["AAPL", "MSFT", "GOOGL", "NVDA", "AMZN", "META", "TSLA", "SPY"]
 FREQUENCY_MAP = {"Daily": "B", "Weekly": "W-FRI", "Monthly": "M"}
 PERIODS_PER_YEAR = {"Daily": 252, "Weekly": 52, "Monthly": 12}
+SAMPLE_PRICE_PATH = Path(__file__).with_name("sample_prices.csv")
 
 
 @dataclass
@@ -40,25 +43,238 @@ class TearSheetInputs:
     forecast_horizon: int
 
 
-@st.cache_data(show_spinner=False)
-def load_price_data(tickers: Iterable[str], start: str, end: str) -> pd.DataFrame:
-    """Download adjusted close prices for the provided tickers."""
-    data = yf.download(
-        tickers=list(tickers),
-        start=start,
-        end=end,
-        auto_adjust=True,
-        progress=False,
-    )
-    if data.empty:
+def load_sample_prices(
+    tickers: Iterable[str], start: pd.Timestamp, end: pd.Timestamp
+) -> pd.DataFrame:
+    if not SAMPLE_PRICE_PATH.exists():
         return pd.DataFrame()
 
-    closes = data["Close"].copy()
-    if isinstance(closes, pd.Series):
-        closes = closes.to_frame()
-    closes = closes.dropna(how="all")
-    closes.index.name = "date"
-    return closes
+    sample = pd.read_csv(SAMPLE_PRICE_PATH, parse_dates=["date"], index_col="date")
+    sample = sample.loc[(sample.index >= start) & (sample.index <= end)]
+    columns = [t for t in tickers if t in sample.columns]
+    if not columns:
+        return pd.DataFrame()
+    return sample[columns].copy()
+
+
+def try_download_batch(
+    tickers: Iterable[str], start: pd.Timestamp, end: pd.Timestamp
+) -> Optional[pd.DataFrame]:
+    symbols = " ".join(tickers)
+    if not symbols:
+        return None
+
+    try:
+        data = yf.download(
+            symbols,
+            start=start,
+            end=end,
+            progress=False,
+            threads=False,
+            group_by="ticker",
+        )
+    except Exception:
+        return None
+
+    if data is None or data.empty:
+        return None
+
+    if isinstance(data.columns, pd.MultiIndex):
+        if "Adj Close" in data.columns.get_level_values(-1):
+            close = data.xs("Adj Close", axis=1, level=-1)
+        elif "Close" in data.columns.get_level_values(-1):
+            close = data.xs("Close", axis=1, level=-1)
+        else:
+            return None
+    else:
+        if "Adj Close" in data.columns:
+            close = data[["Adj Close"]].copy()
+        elif "Close" in data.columns:
+            close = data[["Close"]].copy()
+        else:
+            return None
+        # single ticker response
+        col_name = symbols.strip().split(" ")[0]
+        close.columns = [col_name]
+
+    close.index = pd.to_datetime(close.index)
+    if getattr(close.index, "tz", None) is not None:
+        close.index = close.index.tz_localize(None)
+
+    close = close.dropna(how="all")
+    return close if not close.empty else None
+
+
+def fetch_single_ticker(symbol: str, start: pd.Timestamp, end: pd.Timestamp) -> Optional[pd.Series]:
+    try:
+        data = yf.download(
+            tickers=symbol,
+            start=start,
+            end=end,
+            progress=False,
+            threads=False,
+        )
+    except Exception:
+        data = None
+
+    if data is not None and not data.empty:
+        candidate_cols = [col for col in ("Adj Close", "Close") if col in data.columns]
+        if candidate_cols:
+            close = data[candidate_cols[0]].copy()
+            if isinstance(close, pd.DataFrame):
+                close = close.iloc[:, 0]
+            close = pd.Series(close, name=symbol).dropna()
+            if not close.empty:
+                close.index = pd.to_datetime(close.index)
+                if getattr(close.index, "tz", None) is not None:
+                    close.index = close.index.tz_localize(None)
+                return close
+
+    # Fallback to pandas-datareader if yfinance fails
+    try:
+        data = pdr_data.get_data_yahoo(symbol, start=start, end=end)
+    except Exception:
+        return None
+
+    if data is None or data.empty:
+        return None
+
+    candidate_cols = [col for col in ("Adj Close", "Close") if col in data.columns]
+    if not candidate_cols:
+        return None
+
+    close = data[candidate_cols[0]].copy()
+    close = pd.Series(close, name=symbol).dropna()
+    if close.empty:
+        return None
+    close.index = pd.to_datetime(close.index)
+    if getattr(close.index, "tz", None) is not None:
+        close.index = close.index.tz_localize(None)
+    return close
+
+
+def generate_stub_prices(ticker: str, start: pd.Timestamp, end: pd.Timestamp) -> pd.Series:
+    """Create deterministic synthetic prices so the template works offline."""
+
+    index = pd.bdate_range(start, end)
+    if index.empty:
+        return pd.Series(name=ticker)
+
+    seed = (abs(hash(ticker)) % (2**32)) or 42
+    rng = np.random.default_rng(seed)
+    mu = 0.0005
+    sigma = 0.012
+    log_returns = rng.normal(mu, sigma, len(index))
+    prices = 100 * np.exp(np.cumsum(log_returns))
+    series = pd.Series(prices, index=index, name=ticker)
+    return series
+
+
+@st.cache_data(show_spinner=False)
+def load_price_data(
+    tickers: Iterable[str], start: pd.Timestamp, end: pd.Timestamp
+) -> dict:
+    """Download adjusted close prices and capture any tickers that fail."""
+
+    start_ts = pd.to_datetime(start)
+    end_ts = pd.to_datetime(end)
+
+    frames: dict[str, pd.Series] = {}
+    failed: List[str] = []
+
+    # Try to load sample data first as a fallback
+    sample_prices = load_sample_prices(tickers, start_ts, end_ts)
+    if not sample_prices.empty:
+        # Use sample data if available
+        for col in sample_prices.columns:
+            if col in tickers:
+                frames[col] = sample_prices[col].dropna()
+
+        missing = [t for t in tickers if t not in frames]
+        if missing:
+            # Generate synthetic data for missing tickers
+            synthetic_frames = [generate_stub_prices(t, start_ts, end_ts) for t in missing]
+            for s in synthetic_frames:
+                if not s.empty:
+                    frames[s.name] = s
+
+        if frames:
+            prices = pd.concat(frames.values(), axis=1).sort_index()
+            prices.index.name = "date"
+            prices = prices.dropna(how="all")
+            return {
+                "prices": prices.copy(),
+                "failed": [],
+                "used_sample": True,
+                "synthetic": [t for t in missing if t in frames],
+            }
+
+    # Try downloading from yfinance if no sample data
+    batch = try_download_batch(tickers, start_ts, end_ts)
+    if batch is not None:
+        for symbol in tickers:
+            if symbol in batch.columns:
+                ser = batch[symbol].dropna()
+                if not ser.empty:
+                    frames[symbol] = ser
+
+        missing = [symbol for symbol in tickers if symbol not in frames]
+    else:
+        missing = list(tickers)
+
+    for symbol in missing:
+        series = fetch_single_ticker(symbol, start_ts, end_ts)
+        if series is None:
+            failed.append(symbol)
+            continue
+        frames[symbol] = series
+
+    if frames:
+        prices = pd.concat(frames.values(), axis=1).sort_index()
+        prices.index.name = "date"
+        prices = prices.dropna(how="all")
+        return {
+            "prices": prices.copy(),
+            "failed": failed[:],
+            "used_sample": False,
+            "synthetic": [],
+        }
+
+    # If no data from yfinance, try sample data again
+    sample_prices = load_sample_prices(tickers, start_ts, end_ts)
+    if not sample_prices.empty:
+        missing = [t for t in tickers if t not in sample_prices.columns]
+        synthetic_frames = [generate_stub_prices(t, start_ts, end_ts) for t in missing]
+        combined_frames = [sample_prices] + [s for s in synthetic_frames if not s.empty]
+        combined = pd.concat(combined_frames, axis=1).sort_index()
+        combined.index.name = "date"
+        synthetic_symbols = [s.name for s in synthetic_frames if not s.empty]
+        return {
+            "prices": combined.copy(),
+            "failed": [],
+            "used_sample": True,
+            "synthetic": synthetic_symbols,
+        }
+
+    # As a last resort, synthesize prices for every requested ticker so the UI remains interactive.
+    synthetic_frames = [generate_stub_prices(t, start_ts, end_ts) for t in tickers]
+    non_empty = [s for s in synthetic_frames if not s.empty]
+    if not non_empty:
+        return {
+            "prices": pd.DataFrame(),
+            "failed": list(set(failed)),
+            "used_sample": False,
+            "synthetic": [],
+        }
+
+    combined = pd.concat(non_empty, axis=1)
+    combined.index.name = "date"
+    return {
+        "prices": combined.copy(),
+        "failed": [],
+        "used_sample": False,
+        "synthetic": [s.name for s in non_empty],
+    }
 
 
 def resample_prices(prices: pd.DataFrame, freq_label: str) -> pd.DataFrame:
@@ -67,7 +283,7 @@ def resample_prices(prices: pd.DataFrame, freq_label: str) -> pd.DataFrame:
 
 
 def compute_returns(prices: pd.DataFrame) -> pd.DataFrame:
-    returns = prices.pct_change().dropna(how="all")
+    returns = prices.pct_change(fill_method=None).dropna(how="all")
     returns.index.name = "date"
     return returns
 
@@ -309,21 +525,27 @@ def render_tabs(prices: pd.DataFrame, freq_label: str, forecast_inputs: TearShee
     )
 
     with tab_price:
-        st.plotly_chart(build_price_chart(prices), use_container_width=True)
+        st.plotly_chart(build_price_chart(prices), width="stretch")
 
     with tab_distribution:
-        st.plotly_chart(build_return_distribution(returns), use_container_width=True)
+        st.plotly_chart(build_return_distribution(returns), width="stretch")
         st.markdown(
             "- Distributions are shown for the selected resampling frequency.\n"
             "- Look for skew, fat tails, and clustering of negative returns when benchmarking models."
         )
 
     with tab_forecast:
-        history = prices[forecast_inputs.forecast_ticker]
+        forecast_ticker = forecast_inputs.forecast_ticker
+        if forecast_ticker not in prices.columns:
+            st.warning(
+                f"Ticker {forecast_ticker} not available in the loaded dataset; showing {prices.columns[0]} instead."
+            )
+            forecast_ticker = prices.columns[0]
+        history = prices[forecast_ticker]
         forecast_df = naive_log_forecast(history, forecast_inputs.forecast_horizon)
         st.plotly_chart(
             build_forecast_chart(history, forecast_df),
-            use_container_width=True,
+            width="stretch",
         )
         st.markdown(
             "This preview uses a simple log-return average with ±2σ bands. Replace this with outputs from the "
@@ -332,19 +554,38 @@ def render_tabs(prices: pd.DataFrame, freq_label: str, forecast_inputs: TearShee
         if not forecast_df.empty:
             st.dataframe(
                 forecast_df.tail(5).style.format("{:.2f}"),
-                use_container_width=True,
+                width="stretch",
             )
 
 
 def main() -> None:
     inputs = sidebar_inputs()
-    prices = load_price_data(inputs.tickers, inputs.start, inputs.end)
+    load_result = load_price_data(inputs.tickers, inputs.start, inputs.end)
 
-    if prices.empty:
+    if load_result["failed"]:
+        st.sidebar.warning(
+            "Data fetch skipped these symbols: {}".format(
+                ", ".join(sorted(load_result["failed"]))
+            )
+        )
+
+    if load_result["used_sample"]:
+        st.sidebar.info(
+            "Using bundled sample price data. Connect to the internet or supply WRDS/CRSP extracts for live pulls."
+        )
+
+    if load_result["synthetic"]:
+        st.sidebar.info(
+            "Synthetic placeholder data generated for: {}".format(
+                ", ".join(sorted(load_result["synthetic"]))
+            )
+        )
+
+    if load_result["prices"].empty:
         st.error("No price data returned. Please adjust your date range or tickers.")
         return
 
-    sampled_prices = resample_prices(prices, inputs.freq_label)
+    sampled_prices = resample_prices(load_result["prices"], inputs.freq_label)
     if sampled_prices.empty:
         st.error("No prices available after resampling. Try a different frequency.")
         return

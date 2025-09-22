@@ -42,6 +42,7 @@
 - **Command:** `streamlit run src/streamlit_ex1/app.py`
 - **Key files to edit:** data loader section (`load_price_data`), metric calculations (`calculate_metrics`), Plotly figure definitions in the tabs.
 - **Deployment checklist:** push to GitHub, confirm `requirements.txt`, configure secrets (if any) in Streamlit Cloud, and set the entry point to `src/streamlit_ex1/app.py`.
+- **Offline note:** the template falls back to `sample_prices.csv` (and synthetic placeholders for other tickers) when Yahoo Finance is unavailable—swap in WRDS/CRSP extracts or connect to the internet for live updates.
 
 ## Deliverables Before Discussion 2
 - Local copy of the Streamlit template running with at least one personalized visualization.
