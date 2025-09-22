@@ -3,7 +3,7 @@
 This repository accompanies the **From Data to Dashboard: Building Interactive Financial Visualizations in Python** workshop. It contains Streamlit demos, automation scripts, and Sphinx documentation that guide students from a simple “hello world” app to a CRSP-powered dashboard informed by the Financial Time-Series Forecasting Repository (FTSFR).
 
 ## Documentation
-The full workshop guide lives in `docs_src/index.md`. You can browse the rendered version by running `doit publish_docs` (see below) and opening the generated pages under `docs/`.
+The full workshop guide lives at [https://jeremybejarano.com/finm_dashboard_workshop/](https://jeremybejarano.com/finm_dashboard_workshop/). The code to build this documentation is in this repo and you can build eveything locally by running `doit` (see below) and opening the generated pages under `docs/`.
 
 ## Required Software & Accounts
 - **Python 3.11+ (Anaconda recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution) and verify `streamlit hello` runs locally.

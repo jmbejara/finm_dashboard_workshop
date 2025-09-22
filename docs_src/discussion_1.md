@@ -30,8 +30,6 @@ Day 1 is all about getting you access to the data and getting you up and running
 2. Clone the FTSFR repository, configure `.env` + `subscriptions.toml`, and test WRDS access.
 3. Export a slim CRSP CSV for further visualization work.
 
-### Independent Practice (4:00 – 5:00 pm)
-- Finish personalizing the apps and document two dashboard ideas you want to explore in Discussion 2.
 
 ## Suggested Next Steps Before Discussion 2
 - Spend time with each app (`app_01`, `app_02`, `app_03`, `app_04_crsp`) and note one enhancement you want to attempt tomorrow.

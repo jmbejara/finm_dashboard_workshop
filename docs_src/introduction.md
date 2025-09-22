@@ -1,6 +1,6 @@
 # Workshop Introduction
 
-Welcome to **From Data to Dashboard: Building Interactive Financial Visualizations in Python**. I’m Jeremy Bejarano (Jeremy works with the Office of Financial Research and teaches in the University of Chicago’s Financial Mathematics program), and I’ll be guiding you through two hands-on days focused on translating WRDS data and forecasting results into polished Streamlit dashboards.
+Welcome to **From Data to Dashboard: Building Interactive Financial Visualizations in Python**. I’m Jeremy Bejarano. I works with the Office of Financial Research and I teach in the University of Chicago’s Financial Mathematics program. My Ph.D. is in economics from the University of Chicago, but I specialize in asset pricing. At the Office of Financial Research, I work on topics in financial stability and specialize in short-term funding markets (especially repo markets). In the Financial Mathematics program, I teach a course called ["FINM 32900: Full Stack Quantitative Finance"](https://finmath.uchicago.edu/curriculum/degree-concentrations/financial-computing/finm-32900/). I’ll be guiding you through two hands-on days focused on translating WRDS data and forecasting results into polished Streamlit dashboards.
 
 ## What You’ll Accomplish
 - Run through a progressive series of Streamlit apps so you can iterate from “hello world” to a fully fledged financial tear sheet.
