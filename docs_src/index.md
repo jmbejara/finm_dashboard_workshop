@@ -14,7 +14,12 @@ Turn your financial analyses into interactive web dashboards that look as polish
 
 Make sure the following tools are installed and ready before Day 1:
 
-- **Python 3.11+ (Anaconda recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution) and verify `streamlit hello` runs in your environment.
+- **Python 3.12 (conda environment recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution), then create an isolated environment for the workshop:
+  ```bash
+  conda create -n finm python=3.12
+  conda activate finm
+  ```
+  After activating the environment, verify `streamlit hello` runs.
 - **VS Code (or another editor)** – Grab [VS Code](https://code.visualstudio.com/) plus the Python and Jupyter extensions, or bring your preferred IDE.
 - **Git + GitHub account** – Install [Git](https://git-scm.com/downloads) and set up a GitHub account if you don’t already have one.
 - **WRDS credentials** – Request an account and test your connection ahead of time:

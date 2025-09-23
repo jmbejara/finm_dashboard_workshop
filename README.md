@@ -6,7 +6,12 @@ This repository accompanies the **From Data to Dashboard: Building Interactive F
 The full workshop guide lives at [https://jeremybejarano.com/finm_dashboard_workshop/](https://jeremybejarano.com/finm_dashboard_workshop/). The code to build this documentation is in this repo and you can build eveything locally by running `doit` (see below) and opening the generated pages under `docs/`.
 
 ## Required Software & Accounts
-- **Python 3.11+ (Anaconda recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution) and verify `streamlit hello` runs locally.
+- **Python 3.12 (conda environment recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution), then create and activate a dedicated environment before installing requirements:
+  ```bash
+  conda create -n finm python=3.12
+  conda activate finm
+  ```
+  With the environment active, verify `streamlit hello` runs locally.
 - **Editor** – VS Code with the Python/Jupyter extensions or your preferred IDE.
 - **Git & GitHub** – Install [Git](https://git-scm.com/downloads) and make sure you have a GitHub account for sharing/deployment.
 - **WRDS credentials** – Request access early and test the connection:
@@ -18,7 +23,11 @@ The full workshop guide lives at [https://jeremybejarano.com/finm_dashboard_work
 
 ## Quick Start
 ```bash
-# Clone the repo and install dependencies
+# Create and activate the workshop environment (Python 3.12)
+conda create -n finm python=3.12
+conda activate finm
+
+# Install dependencies inside the activated environment
 pip install -r requirements.txt
 
 # Pull (or synthesize) CRSP data and build the docs

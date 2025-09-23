@@ -4,6 +4,8 @@ Before we dive into tooling and data pulls, launch the full tear-sheet demo to s
 
 ## Run the App
 ```bash
+conda create -n finm python=3.12
+conda activate finm
 pip install -r requirements.txt
 streamlit run src/streamlit_examples/app_01.py
 ```

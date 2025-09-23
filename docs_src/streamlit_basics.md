@@ -37,7 +37,10 @@ For deeper understanding of these concepts and advanced features, visit the offi
 We use four small apps to highlight how quickly Streamlit scales from a single chart to a data-rich dashboard. Run them in order to see how each layer adds new concepts. By now you should have executed `doit pull_crsp_data`, so the `_data/crsp_streamlit_excerpt.csv` file exists for the later examples.
 
 ## Environment
+Create and activate the dedicated workshop environment before installing dependencies:
 ```bash
+conda create -n finm python=3.12
+conda activate finm
 pip install -r requirements.txt
 ```
 Each app can be launched with `streamlit run <path-to-app.py>`. Use a new terminal tab for each run so you can compare layouts side-by-side.

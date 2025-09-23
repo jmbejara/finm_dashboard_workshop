@@ -3,10 +3,13 @@
 This repository uses [`doit`](https://pydoit.org/) to manage data pulls, documentation builds, and other repeatable tasks. Think of it as a Python-friendly build system that handles dependencies automatically.
 
 ## Installation
+Set up the workshop environment before installing packages:
 ```bash
+conda create -n finm python=3.12
+conda activate finm
 pip install -r requirements.txt
 ```
-This installs `doit` alongside the other packages used in the workshop.
+This installs `doit` alongside the other packages used in the workshop within an isolated Python 3.12 environment.
 
 ## Primary Usage: Run Everything
 ```bash
