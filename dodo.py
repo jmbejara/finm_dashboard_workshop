@@ -21,6 +21,7 @@ DOCS_SRC_DIR = ROOT / "docs_src"
 DOCS_BUILD_DIR: Path = config("DOCS_BUILD_DIR")
 SPHINX_HTML_DIR = DOCS_BUILD_DIR / "build" / "html"
 DOCS_DIR = ROOT / "docs"
+NOTEBOOK_BUILD_DIR = DOCS_BUILD_DIR / "notebooks"
 
 
 def task_pull_crsp_data():
@@ -89,6 +90,48 @@ def _iter_docs_dependencies() -> Iterable[str]:
     return sorted(str(path) for path in DOCS_SRC_DIR.rglob("*") if path.is_file())
 
 
+def task_statsforecast_walkthrough_notebook():
+    """Convert the StatsForecast walkthrough script into a notebook."""
+
+    source = DOCS_SRC_DIR / "statsforecast_walkthrough_ipynb.py"
+    executed_notebook = NOTEBOOK_BUILD_DIR / "time_series_forecasting.ipynb"
+    published_notebook = DOCS_SRC_DIR / "time_series_forecasting.ipynb"
+
+    def _ensure_notebook_build_dir() -> None:
+        executed_notebook.parent.mkdir(parents=True, exist_ok=True)
+
+    def _copy_executed_to_docs() -> None:
+        published_notebook.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(executed_notebook, published_notebook)
+
+    return {
+        "actions": [
+            _ensure_notebook_build_dir,
+            [
+                "ipynb-py-convert",
+                str(source),
+                str(executed_notebook),
+            ],
+            [
+                "jupyter",
+                "nbconvert",
+                "--execute",
+                "--to",
+                "notebook",
+                "--inplace",
+                str(executed_notebook),
+            ],
+            _copy_executed_to_docs,
+        ],
+        "file_dep": [str(source)],
+        "targets": [
+            str(executed_notebook),
+            str(published_notebook),
+        ],
+        "clean": [lambda: shutil.rmtree(NOTEBOOK_BUILD_DIR, ignore_errors=True)],
+    }
+
+
 def task_build_docs():
     """Build the Sphinx site into `_docs/build/html`."""
 
@@ -108,6 +151,7 @@ def task_build_docs():
         ],
         "file_dep": list(_iter_docs_dependencies()),
         "targets": [SPHINX_HTML_DIR / "index.html"],
+        "task_dep": ["statsforecast_walkthrough_notebook"],
         "clean": True,
     }
 

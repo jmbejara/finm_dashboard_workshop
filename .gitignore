@@ -20,6 +20,8 @@
 temp*.csv
 */_build/
 docs_src/_notebook_build/
+_docs/
+_docs/notebooks/
 drafts/draft_bp.pdf
 
 ##############

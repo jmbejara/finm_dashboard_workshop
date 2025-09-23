@@ -10,6 +10,7 @@ The full workshop guide lives at [https://jeremybejarano.com/finm_dashboard_work
   ```bash
   conda create -n finm python=3.12
   conda activate finm
+  pip install -r requirements.txt
   ```
   With the environment active, verify `streamlit hello` runs locally.
 - **Editor** – VS Code with the Python/Jupyter extensions or your preferred IDE.
@@ -33,8 +34,8 @@ pip install -r requirements.txt
 # Pull (or synthesize) CRSP data and build the docs
 doit
 
-# Launch the CRSP dashboard demo
-streamlit run src/streamlit_examples/app_04_crsp.py
+# Launch the streamlit dashboard demo
+streamlit run src/streamlit_examples/app_01.py
 ```
 
 The default `doit` run performs three tasks:
@@ -43,9 +44,9 @@ The default `doit` run performs three tasks:
 3. Builds the Sphinx site into `_docs/build/html/` and mirrors it into `docs/`.
 
 ## Streamlit Examples
+- `src/streamlit_examples/app_01.py` – tear-sheet layout (yfinance with offline fallbacks).
 - `src/streamlit_examples/app_02_hello.py` – minimal hello world (text input + sine wave).
 - `src/streamlit_examples/app_03.py` – sidebar navigation, cached CSV loading, Plotly visualization.
-- `src/streamlit_examples/app_01.py` – tear-sheet layout (yfinance with offline fallbacks).
 - `src/streamlit_examples/app_04_crsp.py` – same layout powered by the CRSP excerpt generated via `doit`.
 
 Customize the apps during the workshop and use them as scaffolds for your final dashboard.

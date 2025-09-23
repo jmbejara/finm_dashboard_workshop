@@ -18,6 +18,7 @@ Make sure the following tools are installed and ready before Day 1:
   ```bash
   conda create -n finm python=3.12
   conda activate finm
+  pip install -r requirements.txt
   ```
   After activating the environment, verify `streamlit hello` runs.
 - **VS Code (or another editor)** – Grab [VS Code](https://code.visualstudio.com/) plus the Python and Jupyter extensions, or bring your preferred IDE.
