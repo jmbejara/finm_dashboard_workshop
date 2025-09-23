@@ -18,7 +18,7 @@ Outline:
 - Read the data.
 - Explore the data.
 - Train many models for every unique combination of time series.
-- Evaluate the model’s performance using cross-validation.
+- Evaluate the model's performance using cross-validation.
 - Select the best model for every unique time series.
 
 Not covered in this guide:
@@ -63,7 +63,7 @@ Y_df.head()
 
 # %%
 """
-This dataset contains 414 unique series with 900 observations on average. For this example and reproducibility’s sake, select only 10 unique IDs and keep only the last week. Depending on your processing infrastructure feel free to select more or fewer series.
+This dataset contains 414 unique series with 900 observations on average. For this example and reproducibility's sake, select only 10 unique IDs and keep only the last week. Depending on your processing infrastructure feel free to select more or fewer series.
 
 Processing time depends on the available computing resources. Running the complete dataset takes around 10 minutes on an AWS c5d.24xlarge (96 cores) instance.
 """
@@ -110,7 +110,7 @@ For this example we will use:
 - `HistoricAverage`: arithmetic mean baseline.
 - `DynamicOptimizedTheta`: a performant theta-family model.
 
-Setting the `season_length` argument is sometimes tricky—Rob Hyndman’s article on seasonal periods is a helpful reference.
+Setting the `season_length` argument is sometimes tricky—Rob Hyndman's article on seasonal periods is a helpful reference.
 """
 
 # %%
@@ -151,7 +151,7 @@ sf = StatsForecast(
     models=models,
     freq=1,
     fallback_model=SeasonalNaive(season_length=7),
-    n_jobs=-1,
+    n_jobs=1,  # single-core execution keeps the walkthrough compatible with ipynb conversion
 )
 sf
 
@@ -206,6 +206,10 @@ sf.plot(Y_df, forecasts_df, models=["SeasonalNaive"], unique_ids=["H10", "H105"]
 ## Evaluate Model Performance
 
 To assess accuracy and robustness, perform time-series cross-validation. Define a sliding window across the historical data and predict the period following it. This mirrors how the model would have performed in the past while keeping training data contiguous.
+
+With time series data, cross validation is done by defining a sliding window across the historical data and predicting the period following it. This form of cross-validation allows us to arrive at a better estimation of our model's predictive abilities across a wider range of temporal instances while also keeping the data in the training set contiguous as is required by our models.
+
+![Chained Windows](https://raw.githubusercontent.com/Nixtla/statsforecast/main/nbs/imgs/ChainedWindows.gif)
 
 In this case we evaluate the last two days (`n_windows=2`) forecasting every second day (`step_size=24`). Setting `n_windows=1` mirrors a traditional train/test split.
 
@@ -305,8 +309,3 @@ Plot the production-ready forecast table to confirm the selected models behave a
 
 # %%
 sf.plot(Y_df, prod_forecasts_df, level=[90])
-
-# %%
-"""
-Was this page helpful?
-"""

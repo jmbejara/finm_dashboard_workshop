@@ -91,9 +91,9 @@ def _iter_docs_dependencies() -> Iterable[str]:
 
 
 def task_statsforecast_walkthrough_notebook():
-    """Convert the StatsForecast walkthrough script into a notebook."""
+    """Convert and execute the StatsForecast walkthrough notebook."""
 
-    source = DOCS_SRC_DIR / "statsforecast_walkthrough_ipynb.py"
+    source = ROOT / "src" / "statsforecast_walkthrough_ipynb.py"
     executed_notebook = NOTEBOOK_BUILD_DIR / "time_series_forecasting.ipynb"
     published_notebook = DOCS_SRC_DIR / "time_series_forecasting.ipynb"
 
@@ -128,7 +128,7 @@ def task_statsforecast_walkthrough_notebook():
             str(executed_notebook),
             str(published_notebook),
         ],
-        "clean": [lambda: shutil.rmtree(NOTEBOOK_BUILD_DIR, ignore_errors=True)],
+        "clean": True,
     }
 
 
