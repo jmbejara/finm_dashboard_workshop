@@ -16,7 +16,7 @@ Make sure the following tools are installed and ready before Day 1:
 
 - **Python 3.12 (conda environment recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution), then create an isolated environment for the workshop:
   ```bash
-  conda create -n finm python=3.12
+  conda create -n finm python=3.10.14
   conda activate finm
   pip install -r requirements.txt
   ```

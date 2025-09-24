@@ -5,7 +5,7 @@ This repository uses [`doit`](https://pydoit.org/) to manage data pulls, documen
 ## Installation
 Set up the workshop environment before installing packages:
 ```bash
-conda create -n finm python=3.12
+conda create -n finm python=3.10.14
 conda activate finm
 pip install -r requirements.txt
 ```

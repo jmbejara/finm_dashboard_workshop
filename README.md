@@ -8,7 +8,7 @@ The full workshop guide lives at [https://jeremybejarano.com/finm_dashboard_work
 ## Required Software & Accounts
 - **Python 3.12 (conda environment recommended)** – Install the [Anaconda distribution](https://www.anaconda.com/products/distribution), then create and activate a dedicated environment before installing requirements:
   ```bash
-  conda create -n finm python=3.12
+  conda create -n finm python=3.10.14
   conda activate finm
   pip install -r requirements.txt
   ```
@@ -25,7 +25,7 @@ The full workshop guide lives at [https://jeremybejarano.com/finm_dashboard_work
 ## Quick Start
 ```bash
 # Create and activate the workshop environment (Python 3.12)
-conda create -n finm python=3.12
+conda create -n finm python=3.10.14
 conda activate finm
 
 # Install dependencies inside the activated environment
@@ -64,3 +64,4 @@ Reach out to Jeremy Bejarano (jbejarano@uchicago.edu). Issues and pull requests 
 
 ## Misc
 `ruff format . && ruff check --fix --show-fixes . && ruff check .`
+`conda remove --name finm --all`

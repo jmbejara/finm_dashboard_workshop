@@ -39,7 +39,7 @@ We use four small apps to highlight how quickly Streamlit scales from a single c
 ## Environment
 Create and activate the dedicated workshop environment before installing dependencies:
 ```bash
-conda create -n finm python=3.12
+conda create -n finm python=3.10.14
 conda activate finm
 pip install -r requirements.txt
 ```
